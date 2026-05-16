@@ -1,0 +1,911 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Relatório do Professor - PR</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet" />
+  <style>
+    :root{
+      --bg0:#fbf7ef;
+      --bg1:#f4efe5;
+      --card:#ffffff;
+      --ink:#1f2328;
+      --muted:#5f5a52;
+      --line:#e6dfd3;
+      --accent:#1f5e4b;
+      --accent2:#b24b2a;
+      --shadow:0 10px 30px rgba(25,20,10,.08);
+      --radius:16px;
+    }
+    *{box-sizing:border-box;}
+    body{
+      font-family:'Source Serif 4', Georgia, serif;
+      color:var(--ink);
+      background: radial-gradient(1200px 420px at 15% -10%, rgba(31,94,75,.18), transparent 55%),
+                  radial-gradient(900px 360px at 85% 0%, rgba(178,75,42,.16), transparent 55%),
+                  linear-gradient(180deg, var(--bg0), var(--bg1));
+      max-width:min(1960px, 96vw); margin:22px auto; padding:0 22px 44px;
+    }
+    h1,h2,h3,h4{font-family:'IBM Plex Sans', ui-sans-serif, system-ui; letter-spacing:-0.01em;}
+    h1{font-size:32px; margin:0 0 6px;}
+    h2{font-size:22px; margin:0 0 10px;}
+    h3{font-size:16px; margin:18px 0 8px;}
+    h4{font-size:14px; margin:12px 0 6px;}
+    p{line-height:1.55;}
+    .muted{color:var(--muted);}
+    a{color:var(--accent); text-decoration:none;}
+    a:hover{text-decoration:underline;}
+    .header{background:rgba(255,255,255,.75); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:16px 16px 14px;}
+    .header .meta{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+    .chip{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; border:1px solid var(--line); background:rgba(255,255,255,.65); font-family:'IBM Plex Sans', ui-sans-serif; font-weight:700; font-size:12px;}
+    .chip b{color:var(--accent2);}
+    .tabs{display:flex; gap:10px; flex-wrap:wrap; margin:14px 0 8px;}
+    .tab-btn{appearance:none; border:1px solid var(--line); background:rgba(255,255,255,.65); padding:10px 12px; border-radius:999px; cursor:pointer; font-weight:700; font-family:'IBM Plex Sans', ui-sans-serif;}
+    .tab-btn[aria-selected="true"]{background:linear-gradient(180deg, #1f5e4b, #174a3b); color:#fff; border-color:#174a3b;}
+    .tab-panel{display:none; animation:fadein .25s ease-out;}
+    .tab-panel.active{display:block;}
+    @keyframes fadein{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);} }
+    .área{margin:18px 0 38px;}
+    .card{background:rgba(255,255,255,.78); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:14px 14px 12px;}
+    .grid{display:grid; grid-template-columns: 1fr; gap:18px; margin-top:12px;}
+    @media(min-width: 1080px){.grid{grid-template-columns: repeat(2, minmax(640px, 1fr));}}
+    figure{margin:0;}
+    .fig{background:rgba(255,255,255,.85); border:1px solid var(--line); border-radius:14px; overflow:hidden; box-shadow:0 8px 24px rgba(25,20,10,.06); position:relative;}
+    .fig img{display:block; width:100%; height:auto;}
+    .fig img{cursor:zoom-in;}
+    .zoom-cue{position:absolute; right:10px; top:10px; width:34px; height:34px; border-radius:999px; background:rgba(255,255,255,.86); border:1px solid rgba(230,223,211,.95); box-shadow:0 10px 24px rgba(25,20,10,.14); pointer-events:none;}
+    .zoom-cue::before{content:''; position:absolute; left:11px; top:11px; width:10px; height:10px; border:2px solid rgba(31,94,75,.92); border-radius:999px;}
+    .zoom-cue::after{content:''; position:absolute; left:20px; top:22px; width:11px; height:2px; background:rgba(31,94,75,.92); transform:rotate(45deg); transform-origin:left center; border-radius:2px;}
+    .fig:hover .zoom-cue{transform:scale(1.03);}
+    .figcap{padding:10px 12px 12px;}
+    .figcap .title{font-family:'IBM Plex Sans', ui-sans-serif; font-weight:800; font-size:13px; margin:0 0 6px;}
+    .figcap .desc{margin:0; color:var(--muted); font-size:13px;}
+    .figcap .desc p{margin:0 0 8px;}
+    .figcap .desc ul{margin:0; padding-left:18px;}
+    .figcap .desc li{margin:4px 0;}
+    .figcap .meta{display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;}
+    .figcap .badge{display:inline-flex; align-items:center; padding:4px 8px; border-radius:999px; border:1px solid var(--line); background:rgba(244,239,229,.85); font-family:'IBM Plex Sans', ui-sans-serif; font-weight:800; font-size:12px; text-decoration:none; color:var(--ink);}
+    .figcap a.badge{background:rgba(31,94,75,.12); border-color:rgba(31,94,75,.25);}
+    details{border:1px solid var(--line); border-radius:14px; background:rgba(255,255,255,.75); box-shadow:0 8px 24px rgba(25,20,10,.06); overflow:hidden;}
+    summary{cursor:pointer; padding:10px 12px; list-style:none; font-family:'IBM Plex Sans', ui-sans-serif; font-weight:800;}
+    summary::-webkit-details-marker{display:none;}
+    .details-body{padding:10px 12px 12px;}
+    table{border-collapse:collapse; width:100%; margin:10px 0 0; font-size:13px;}
+    th,td{border:1px solid rgba(230,223,211,.9); padding:7px 9px; text-align:left;}
+    th{background:rgba(244,239,229,.85); font-family:'IBM Plex Sans', ui-sans-serif;}
+    .right{text-align:right;}
+    .note{margin:10px 0 0; color:var(--muted); font-size:13px;}
+    .lightbox{position:fixed; inset:0; background:rgba(10,10,10,.68); display:none; align-items:center; justify-content:center; padding:18px; z-index:9999;}
+    .lightbox.open{display:flex;}
+    .lightbox .inner{max-width:min(1700px, 98vw); max-height:92vh; background:rgba(255,255,255,.96); border-radius:16px; border:1px solid rgba(255,255,255,.25); box-shadow:0 24px 60px rgba(0,0,0,.35); overflow:hidden;}
+    .lightbox .bar{display:flex; justify-content:space-between; gap:10px; padding:10px 12px; background:rgba(244,239,229,.9); border-bottom:1px solid var(--line); font-family:'IBM Plex Sans', ui-sans-serif;}
+    .lightbox .bar .t{font-weight:900; font-size:12px; color:var(--muted);}
+    .lightbox .bar button{appearance:none; border:1px solid var(--line); background:#fff; border-radius:10px; padding:6px 10px; cursor:pointer; font-weight:900;}
+    .lightbox img{display:block; width:auto; height:auto; max-width:98vw; max-height:88vh;}
+  </style>
+</head>
+<body>
+<div class="header">
+<h1>Relatório do Professor</h1>
+<div class="meta">
+<span class="chip">UF <b>PR</b></span>
+<span class="chip">Modelo <b>3PL</b> (D=1.0)</span>
+<span class="chip">Critérios <b>v5_10</b></span>
+</div>
+<p class="muted" style="margin:10px 0 0;">Painel para priorização de intervenções e revisão de itens. Comparativo PA vs PR nos gráficos; tabelas detalham itens por UF.</p>
+</div>
+<div class="tabs" role="tablist" aria-label="Áreas do conhecimento">
+<button class="tab-btn" role="tab" id="tab-CN" aria-controls="panel-CN" aria-selected="true" onclick="showTab('CN')">Ciências da Natureza</button>
+<button class="tab-btn" role="tab" id="tab-CH" aria-controls="panel-CH" aria-selected="false" onclick="showTab('CH')">Ciências Humanas</button>
+<button class="tab-btn" role="tab" id="tab-LC" aria-controls="panel-LC" aria-selected="false" onclick="showTab('LC')">Linguagens e Códigos</button>
+<button class="tab-btn" role="tab" id="tab-MT" aria-controls="panel-MT" aria-selected="false" onclick="showTab('MT')">Matemática</button>
+</div>
+<script>
+function showTab(area){
+  const panels = document.querySelectorAll('.tab-panel');
+  const btns = document.querySelectorAll('.tab-btn');
+  panels.forEach(p => p.classList.remove('active'));
+  btns.forEach(b => b.setAttribute('aria-selected','false'));
+  const panel = document.getElementById('panel-' + area);
+  const btn = document.getElementById('tab-' + area);
+  if(panel) panel.classList.add('active');
+  if(btn) btn.setAttribute('aria-selected','true');
+  try{ history.replaceState(null,'','#' + area); }catch(e){}
+}
+window.addEventListener('DOMContentLoaded', () => {
+  const h = (location.hash || '').replace('#','');
+  const area = h && ['CN','CH','LC','MT'].includes(h) ? h : 'CN';
+  showTab(area);
+});
+</script>
+<div class="lightbox" id="lb" role="dialog" aria-modal="true">
+<div class="inner">
+<div class="bar"><div class="t" id="lbtitle">Imagem</div><button type="button" id="lbclose">Fechar</button></div>
+<img id="lbimg" alt="" />
+</div></div>
+<script>
+const lb=document.getElementById("lb"); const lbimg=document.getElementById("lbimg"); const lbtitle=document.getElementById("lbtitle");
+function lbOpen(src,title){ lbimg.src=src; lbtitle.textContent=title||"Imagem"; lb.classList.add("open"); }
+function lbClose(){ lb.classList.remove("open"); lbimg.src=""; }
+document.getElementById("lbclose").addEventListener("click", lbClose);
+lb.addEventListener("click", (e)=>{ if(e.target===lb) lbClose(); });
+window.addEventListener("keydown", (e)=>{ if(e.key==="Escape") lbClose(); });
+document.addEventListener("click", (e)=>{ const img=e.target.closest("img[data-lb]"); if(!img) return; e.preventDefault(); lbOpen(img.getAttribute("data-src"), img.getAttribute("data-title")); });
+</script>
+<div class="tab-panel" id="panel-CN" role="tabpanel" aria-labelledby="tab-CN">
+<div class="área">
+<h2>Ciências da Natureza (CN)</h2>
+<div class="card">
+<h3>Como ler este painel</h3>
+<p class="muted" style="margin:0;">Use os gráficos para identificar (1) diferenças entre UFs, (2) onde o desempenho observado foge do esperado pelo modelo, e (3) quais itens/alunos priorizar. As imagens podem ser ampliadas com um clique.</p>
+</div>
+<div class="grid">
+<figure class="fig">
+<span class="zoom-cue" aria-hidden="true"></span>
+<img data-lb="1" data-src="v5_10/figuras/CN_dist_hist_pct_enem_PA_PR_v5_10.png" data-title="Distribuicao de habilidade (ENEM)" src="v5_10/figuras/CN_dist_hist_pct_enem_PA_PR_v5_10.png" alt="CN_dist_hist_pct_enem_PA_PR_v5_10.png" loading="lazy" />
+<figcaption class="figcap">
+<div class="title">Distribuicao de habilidade (ENEM)</div>
+<div class="desc"><p>Mostra como a proficiência se distribui no grupo de estudantes (PA vs PR) nesta área.</p><ul><li><b>Deslocamento</b>: se a mediana de uma UF está maior, em média ela está mais alta na escala.</li><li><b>Dispersao</b>: caudas longas indicam heterogeneidade; pode demandar trilhas por nivel.</li></ul></div>
+<div class="meta">
+<a class="badge" href="v5_10/figuras/CN_dist_hist_pct_enem_PA_PR_v5_10.png" target="_blank" rel="noopener">Abrir em nova aba</a>
+<span class="badge">Médiana ENEM: PA=604 (IQR 561-660) | PR=607 (IQR 560-666)</span>
+</div>
+</figcaption>
+</figure>
+<figure class="fig">
+<span class="zoom-cue" aria-hidden="true"></span>
+<img data-lb="1" data-src="v5_10/figuras/CN_obs_exp_acertos_PA_PR_v5_10.png" data-title="Observado vs esperado (delta)" src="v5_10/figuras/CN_obs_exp_acertos_PA_PR_v5_10.png" alt="CN_obs_exp_acertos_PA_PR_v5_10.png" loading="lazy" />
+<figcaption class="figcap">
+<div class="title">Observado vs esperado (delta)</div>
+<div class="desc"><p>Compara o desempenho observado com o esperado pelo modelo ao longo da escala de habilidade.</p><ul><li><b>Delta &lt; 0</b>: alunos acertam menos do que o esperado naquela faixa (sinal de lacuna curricular, estratégia, ou dificuldade real maior).</li><li><b>Delta &gt; 0</b>: alunos acertam mais do que o esperado (pode indicar bom ensino local ou itens mais faceis do que o modelo sugere).</li></ul><p class="note">Uso prático: planeje revisão por nivel (básico/intermediário/avançado) a partir das faixas com delta negativo.</p></div>
+<div class="meta">
+<a class="badge" href="v5_10/figuras/CN_obs_exp_acertos_PA_PR_v5_10.png" target="_blank" rel="noopener">Abrir em nova aba</a>
+</div>
+</figcaption>
+</figure>
+<figure class="fig">
+<span class="zoom-cue" aria-hidden="true"></span>
+<img data-lb="1" data-src="v5_10/figuras/CN_eventos_por_aluno_pct_PA_PR_v5_10.png" data-title="Eventos por aluno (Xi/Yi)" src="v5_10/figuras/CN_eventos_por_aluno_pct_PA_PR_v5_10.png" alt="CN_eventos_por_aluno_pct_PA_PR_v5_10.png" loading="lazy" />
+<figcaption class="figcap">
+<div class="title">Eventos por aluno (Xi/Yi)</div>
+<div class="desc"><p>Quantifica quantos itens por aluno foram sinalizados como <b>acerto improvável</b> (Xi) ou <b>erro improvável</b> (Yi).</p><ul><li><b>Cauda a direita</b>: existe um subgrupo com muitos eventos; priorize devolutiva individual.</li><li><b>Yi elevado</b>: frequente em casos de desatenção/leitura/pressa; pode justificar treino de estratégia.</li></ul></div>
+<div class="meta">
+<a class="badge" href="v5_10/figuras/CN_eventos_por_aluno_pct_PA_PR_v5_10.png" target="_blank" rel="noopener">Abrir em nova aba</a>
+<span class="badge">Alunos com &gt;=1 evento: Xi PA=90.9% PR=90.1% | Yi PA=0.1% PR=0.4%</span>
+</div>
+</figcaption>
+</figure>
+<figure class="fig">
+<span class="zoom-cue" aria-hidden="true"></span>
+<img data-lb="1" data-src="v5_10/figuras/CN_perfis_por_aluno_pct_PA_PR_v5_10.png" data-title="Perfis adaptativos de inconsistência" src="v5_10/figuras/CN_perfis_por_aluno_pct_PA_PR_v5_10.png" alt="CN_perfis_por_aluno_pct_PA_PR_v5_10.png" loading="lazy" />
+<figcaption class="figcap">
+<div class="title">Perfis adaptativos de inconsistência</div>
+<div class="desc"><p>Resume Xi/Yi em categorias (Sem ocorrências/Baixa/Moderada/Alta/Muito alta) via quantis.</p><ul><li><b>Alta/Muito alta</b>: priorize acompanhamento (monitoria, revisão dirigida, feedback individual).</li><li><b>Comparacao PA vs PR</b>: diferenças sugerem foco de intervenção distinto por UF.</li></ul></div>
+<div class="meta">
+<a class="badge" href="v5_10/figuras/CN_perfis_por_aluno_pct_PA_PR_v5_10.png" target="_blank" rel="noopener">Abrir em nova aba</a>
+</div>
+</figcaption>
+</figure>
+<figure class="fig">
+<span class="zoom-cue" aria-hidden="true"></span>
+<img data-lb="1" data-src="v5_10/figuras/CN_top_acerto_improvavel_items_PA_PR_v5_10.png" data-title="Top itens com acerto improvável" src="v5_10/figuras/CN_top_acerto_improvavel_items_PA_PR_v5_10.png" alt="CN_top_acerto_improvável_items_PA_PR_v5_10.png" loading="lazy" />
+<figcaption class="figcap">
+<div class="title">Top itens com acerto improvável</div>
+<div class="desc"><p>Itens com maior incidência de <b>acertos improváveis</b> (P* baixo e piso c alto).</p><ul><li>Use para <b>auditoria</b>: enunciado, distratores, pistas e aderencia a habilidade.</li><li>Use para <b>feedback docente</b>: evitar conclusao forte sobre aluno baseada apenas nesses itens.</li></ul></div>
+<div class="meta">
+<a class="badge" href="v5_10/figuras/CN_top_acerto_improvavel_items_PA_PR_v5_10.png" target="_blank" rel="noopener">Abrir em nova aba</a>
+<span class="badge">Top 3 (PA): Q29 (35.6%), Q10 (28.3%), Q26 (26.6%)</span>
+<span class="badge">Top 3 (PR): Q6 (40.7%), Q29 (29.5%), Q26 (26.1%)</span>
+</div>
+</figcaption>
+</figure>
+<figure class="fig">
+<span class="zoom-cue" aria-hidden="true"></span>
+<img data-lb="1" data-src="v5_10/figuras/CN_c_vs_taxa_TODOS_ITENS_PA_PR_v5_10.png" data-title="Piso de acerto (c) vs incidência" src="v5_10/figuras/CN_c_vs_taxa_TODOS_ITENS_PA_PR_v5_10.png" alt="CN_c_vs_taxa_TODOS_ITENS_PA_PR_v5_10.png" loading="lazy" />
+<figcaption class="figcap">
+<div class="title">Piso de acerto (c) vs incidência</div>
+<div class="desc"><p>Relaciona o <b>piso de chute (c)</b> com a incidência de acertos improváveis.</p><ul><li><b>c alto</b> + incidência alta: item vulnerável a acerto por eliminação/chute; bom candidato a revisão.</li><li>c baixo + incidência alta: pode apontar item com pistas não capturadas pelo modelo.</li></ul></div>
+<div class="meta">
+<a class="badge" href="v5_10/figuras/CN_c_vs_taxa_TODOS_ITENS_PA_PR_v5_10.png" target="_blank" rel="noopener">Abrir em nova aba</a>
+<span class="badge">Itens com c&gt;=20% (estáveis): PA=11 PR=14</span>
+</div>
+</figcaption>
+</figure>
+</div>
+<details open>
+<summary>Itens por dificuldade (UF=PR)</summary>
+<div class="details-body">
+<p class="note">Classificação baseada no parâmetro b (theta) com limiares fixos. A tabela abaixo lista apenas itens estáveis (a&gt;0 e |b|&lt;=4). Itens instáveis (excluídos aqui): 4.</p>
+<details>
+<summary>Muito fácil (0 itens)</summary>
+<div class="details-body">
+<p class="muted" style="margin:0;">Nenhum item nesta categoria.</p>
+</div>
+</details>
+<details>
+<summary>Fácil (0 itens)</summary>
+<div class="details-body">
+<p class="muted" style="margin:0;">Nenhum item nesta categoria.</p>
+</div>
+</details>
+<details>
+<summary>Média (2 itens)</summary>
+<div class="details-body">
+<table>
+<thead><tr><th>Questao</th><th>Item na prova</th><th class="right">Dificuldade (ENEM)</th><th class="right">Acertos (%)</th><th class="right">a</th><th class="right">c</th></tr></thead>
+<tbody>
+<tr><td>Q44</td><td>134</td><td class="right">636.40</td><td class="right">48.07%</td><td class="right">1.497</td><td class="right">12.6%</td></tr>
+<tr><td>Q19</td><td>109</td><td class="right">647.36</td><td class="right">46.99%</td><td class="right">0.291</td><td class="right">0.7%</td></tr>
+</tbody></table>
+</div>
+</details>
+<details>
+<summary>Difícil (5 itens)</summary>
+<div class="details-body">
+<table>
+<thead><tr><th>Questao</th><th>Item na prova</th><th class="right">Dificuldade (ENEM)</th><th class="right">Acertos (%)</th><th class="right">a</th><th class="right">c</th></tr></thead>
+<tbody>
+<tr><td>Q41</td><td>131</td><td class="right">693.86</td><td class="right">40.63%</td><td class="right">1.270</td><td class="right">16.7%</td></tr>
+<tr><td>Q40</td><td>130</td><td class="right">697.18</td><td class="right">42.39%</td><td class="right">1.277</td><td class="right">20.0%</td></tr>
+<tr><td>Q10</td><td>100</td><td class="right">709.14</td><td class="right">55.45%</td><td class="right">1.339</td><td class="right">40.6%</td></tr>
+<tr><td>Q7</td><td>97</td><td class="right">712.90</td><td class="right">49.32%</td><td class="right">1.707</td><td class="right">35.5%</td></tr>
+<tr><td>Q45</td><td>135</td><td class="right">712.95</td><td class="right">29.15%</td><td class="right">2.280</td><td class="right">12.9%</td></tr>
+</tbody></table>
+</div>
+</details>
+<details>
+<summary>Muito difícil (30 itens)</summary>
+<div class="details-body">
+<table>
+<thead><tr><th>Questao</th><th>Item na prova</th><th class="right">Dificuldade (ENEM)</th><th class="right">Acertos (%)</th><th class="right">a</th><th class="right">c</th></tr></thead>
+<tbody>
+<tr><td>Q9</td><td>99</td><td class="right">730.19</td><td class="right">39.45%</td><td class="right">1.359</td><td class="right">23.4%</td></tr>
+<tr><td>Q27</td><td>117</td><td class="right">740.60</td><td class="right">34.98%</td><td class="right">1.264</td><td class="right">18.5%</td></tr>
+<tr><td>Q35</td><td>125</td><td class="right">746.30</td><td class="right">34.57%</td><td class="right">0.462</td><td class="right">0.2%</td></tr>
+<tr><td>Q15</td><td>105</td><td class="right">769.08</td><td class="right">26.57%</td><td class="right">1.321</td><td class="right">13.3%</td></tr>
+<tr><td>Q12</td><td>102</td><td class="right">769.64</td><td class="right">24.13%</td><td class="right">1.840</td><td class="right">14.6%</td></tr>
+<tr><td>Q8</td><td>98</td><td class="right">770.46</td><td class="right">35.41%</td><td class="right">2.175</td><td class="right">28.7%</td></tr>
+<tr><td>Q42</td><td>132</td><td class="right">776.75</td><td class="right">31.82%</td><td class="right">0.904</td><td class="right">14.6%</td></tr>
+<tr><td>Q38</td><td>128</td><td class="right">782.25</td><td class="right">15.83%</td><td class="right">2.250</td><td class="right">8.7%</td></tr>
+<tr><td>Q3</td><td>93</td><td class="right">787.86</td><td class="right">25.76%</td><td class="right">3.571</td><td class="right">22.0%</td></tr>
+<tr><td>Q29</td><td>119</td><td class="right">792.38</td><td class="right">39.57%</td><td class="right">2.129</td><td class="right">34.9%</td></tr>
+<tr><td>Q30</td><td>120</td><td class="right">794.23</td><td class="right">15.57%</td><td class="right">1.795</td><td class="right">7.8%</td></tr>
+<tr><td>Q23</td><td>113</td><td class="right">794.70</td><td class="right">19.81%</td><td class="right">3.407</td><td class="right">16.1%</td></tr>
+<tr><td>Q25</td><td>115</td><td class="right">794.89</td><td class="right">17.28%</td><td class="right">5.151</td><td class="right">14.2%</td></tr>
+<tr><td>Q37</td><td>127</td><td class="right">802.56</td><td class="right">18.58%</td><td class="right">4.012</td><td class="right">15.7%</td></tr>
+<tr><td>Q6</td><td>96</td><td class="right">805.04</td><td class="right">53.01%</td><td class="right">1.810</td><td class="right">49.3%</td></tr>
+<tr><td>Q33</td><td>123</td><td class="right">807.53</td><td class="right">31.06%</td><td class="right">1.385</td><td class="right">23.4%</td></tr>
+<tr><td>Q4</td><td>94</td><td class="right">812.32</td><td class="right">29.68%</td><td class="right">2.136</td><td class="right">25.7%</td></tr>
+<tr><td>Q16</td><td>106</td><td class="right">825.16</td><td class="right">22.21%</td><td class="right">1.759</td><td class="right">17.4%</td></tr>
+<tr><td>Q17</td><td>107</td><td class="right">830.95</td><td class="right">13.07%</td><td class="right">1.704</td><td class="right">7.9%</td></tr>
+<tr><td>Q18</td><td>108</td><td class="right">834.95</td><td class="right">14.24%</td><td class="right">2.615</td><td class="right">11.8%</td></tr>
+<tr><td>Q21</td><td>111</td><td class="right">836.35</td><td class="right">22.71%</td><td class="right">1.075</td><td class="right">13.5%</td></tr>
+<tr><td>Q39</td><td>129</td><td class="right">845.52</td><td class="right">19.28%</td><td class="right">1.933</td><td class="right">16.1%</td></tr>
+<tr><td>Q26</td><td>116</td><td class="right">847.69</td><td class="right">27.82%</td><td class="right">3.572</td><td class="right">26.8%</td></tr>
+<tr><td>Q32</td><td>122</td><td class="right">850.46</td><td class="right">26.87%</td><td class="right">3.856</td><td class="right">26.0%</td></tr>
+<tr><td>Q31</td><td>121</td><td class="right">864.50</td><td class="right">16.11%</td><td class="right">3.681</td><td class="right">15.3%</td></tr>
+<tr><td>Q28</td><td>118</td><td class="right">864.66</td><td class="right">11.82%</td><td class="right">1.127</td><td class="right">4.4%</td></tr>
+<tr><td>Q13</td><td>103</td><td class="right">875.95</td><td class="right">25.85%</td><td class="right">1.815</td><td class="right">23.8%</td></tr>
+<tr><td>Q11</td><td>101</td><td class="right">887.91</td><td class="right">32.43%</td><td class="right">0.964</td><td class="right">26.3%</td></tr>
+<tr><td>Q22</td><td>112</td><td class="right">930.14</td><td class="right">13.25%</td><td class="right">2.493</td><td class="right">12.9%</td></tr>
+<tr><td>Q36</td><td>126</td><td class="right">948.47</td><td class="right">32.95%</td><td class="right">0.208</td><td class="right">0.2%</td></tr>
+</tbody></table>
+</div>
+</details>
+</div>
+</details>
+<details>
+<summary>Pontos de atenção: itens com parâmetros instáveis (PA e PR)</summary>
+<div class="details-body">
+<p class="note">Itens instáveis (ex.: a&lt;=0 ou |b|&gt;4) podem indicar ajuste ruim/ruído. Eles não entram nos indicadores agregados (Xi/Yi) e devem ser usados como alerta para revisão do item/material, não para inferência fina sobre alunos.</p>
+<h4>UF PA</h4>
+<table>
+<thead><tr><th>Item</th><th>Item na prova</th><th>Motivo</th><th class="right">a</th><th class="right">b</th><th class="right">b (ENEM)</th><th class="right">c</th></tr></thead>
+<tbody>
+<tr><td>Q43</td><td>133</td><td>a&lt;=0</td><td class="right">-2.804</td><td class="right">-2.707</td><td class="right">329.30</td><td class="right">19.9%</td></tr>
+<tr><td>Q14</td><td>104</td><td>a&lt;=0, |b|&gt;4</td><td class="right">-0.147</td><td class="right">-15.603</td><td class="right">-960.25</td><td class="right">14.8%</td></tr>
+<tr><td>Q5</td><td>95</td><td>|b|&gt;4</td><td class="right">0.256</td><td class="right">6.519</td><td class="right">1251.88</td><td class="right">12.1%</td></tr>
+<tr><td>Q20</td><td>110</td><td>|b|&gt;4</td><td class="right">0.201</td><td class="right">7.006</td><td class="right">1300.57</td><td class="right">10.9%</td></tr>
+<tr><td>Q32</td><td>122</td><td>|b|&gt;4</td><td class="right">0.299</td><td class="right">12.137</td><td class="right">1813.68</td><td class="right">23.8%</td></tr>
+</tbody></table>
+<h4>UF PR</h4>
+<table>
+<thead><tr><th>Item</th><th>Item na prova</th><th>Motivo</th><th class="right">a</th><th class="right">b</th><th class="right">b (ENEM)</th><th class="right">c</th></tr></thead>
+<tbody>
+<tr><td>Q43</td><td>133</td><td>a&lt;=0</td><td class="right">-2.434</td><td class="right">-2.742</td><td class="right">325.77</td><td class="right">17.8%</td></tr>
+<tr><td>Q14</td><td>104</td><td>a&lt;=0, |b|&gt;4</td><td class="right">-1.112</td><td class="right">-4.273</td><td class="right">172.69</td><td class="right">20.7%</td></tr>
+<tr><td>Q5</td><td>95</td><td>|b|&gt;4</td><td class="right">0.146</td><td class="right">7.342</td><td class="right">1334.19</td><td class="right">7.5%</td></tr>
+<tr><td>Q20</td><td>110</td><td>|b|&gt;4</td><td class="right">0.181</td><td class="right">4.423</td><td class="right">1042.28</td><td class="right">3.4%</td></tr>
+</tbody></table>
+</div>
+</details>
+</div>
+</div>
+<div class="tab-panel" id="panel-CH" role="tabpanel" aria-labelledby="tab-CH">
+<div class="área">
+<h2>Ciências Humanas (CH)</h2>
+<div class="card">
+<h3>Como ler este painel</h3>
+<p class="muted" style="margin:0;">Use os gráficos para identificar (1) diferenças entre UFs, (2) onde o desempenho observado foge do esperado pelo modelo, e (3) quais itens/alunos priorizar. As imagens podem ser ampliadas com um clique.</p>
+</div>
+<div class="grid">
+<figure class="fig">
+<span class="zoom-cue" aria-hidden="true"></span>
+<img data-lb="1" data-src="v5_10/figuras/CH_dist_hist_pct_enem_PA_PR_v5_10.png" data-title="Distribuicao de habilidade (ENEM)" src="v5_10/figuras/CH_dist_hist_pct_enem_PA_PR_v5_10.png" alt="CH_dist_hist_pct_enem_PA_PR_v5_10.png" loading="lazy" />
+<figcaption class="figcap">
+<div class="title">Distribuicao de habilidade (ENEM)</div>
+<div class="desc"><p>Mostra como a proficiência se distribui no grupo de estudantes (PA vs PR) nesta área.</p><ul><li><b>Deslocamento</b>: se a mediana de uma UF está maior, em média ela está mais alta na escala.</li><li><b>Dispersao</b>: caudas longas indicam heterogeneidade; pode demandar trilhas por nivel.</li></ul></div>
+<div class="meta">
+<a class="badge" href="v5_10/figuras/CH_dist_hist_pct_enem_PA_PR_v5_10.png" target="_blank" rel="noopener">Abrir em nova aba</a>
+<span class="badge">Médiana ENEM: PA=604 (IQR 547-667) | PR=603 (IQR 543-667)</span>
+</div>
+</figcaption>
+</figure>
+<figure class="fig">
+<span class="zoom-cue" aria-hidden="true"></span>
+<img data-lb="1" data-src="v5_10/figuras/CH_obs_exp_acertos_PA_PR_v5_10.png" data-title="Observado vs esperado (delta)" src="v5_10/figuras/CH_obs_exp_acertos_PA_PR_v5_10.png" alt="CH_obs_exp_acertos_PA_PR_v5_10.png" loading="lazy" />
+<figcaption class="figcap">
+<div class="title">Observado vs esperado (delta)</div>
+<div class="desc"><p>Compara o desempenho observado com o esperado pelo modelo ao longo da escala de habilidade.</p><ul><li><b>Delta &lt; 0</b>: alunos acertam menos do que o esperado naquela faixa (sinal de lacuna curricular, estratégia, ou dificuldade real maior).</li><li><b>Delta &gt; 0</b>: alunos acertam mais do que o esperado (pode indicar bom ensino local ou itens mais faceis do que o modelo sugere).</li></ul><p class="note">Uso prático: planeje revisão por nivel (básico/intermediário/avançado) a partir das faixas com delta negativo.</p></div>
+<div class="meta">
+<a class="badge" href="v5_10/figuras/CH_obs_exp_acertos_PA_PR_v5_10.png" target="_blank" rel="noopener">Abrir em nova aba</a>
+</div>
+</figcaption>
+</figure>
+<figure class="fig">
+<span class="zoom-cue" aria-hidden="true"></span>
+<img data-lb="1" data-src="v5_10/figuras/CH_eventos_por_aluno_pct_PA_PR_v5_10.png" data-title="Eventos por aluno (Xi/Yi)" src="v5_10/figuras/CH_eventos_por_aluno_pct_PA_PR_v5_10.png" alt="CH_eventos_por_aluno_pct_PA_PR_v5_10.png" loading="lazy" />
+<figcaption class="figcap">
+<div class="title">Eventos por aluno (Xi/Yi)</div>
+<div class="desc"><p>Quantifica quantos itens por aluno foram sinalizados como <b>acerto improvável</b> (Xi) ou <b>erro improvável</b> (Yi).</p><ul><li><b>Cauda a direita</b>: existe um subgrupo com muitos eventos; priorize devolutiva individual.</li><li><b>Yi elevado</b>: frequente em casos de desatenção/leitura/pressa; pode justificar treino de estratégia.</li></ul></div>
+<div class="meta">
+<a class="badge" href="v5_10/figuras/CH_eventos_por_aluno_pct_PA_PR_v5_10.png" target="_blank" rel="noopener">Abrir em nova aba</a>
+<span class="badge">Alunos com &gt;=1 evento: Xi PA=50.0% PR=62.5% | Yi PA=5.3% PR=9.1%</span>
+</div>
+</figcaption>
+</figure>
+<figure class="fig">
+<span class="zoom-cue" aria-hidden="true"></span>
+<img data-lb="1" data-src="v5_10/figuras/CH_perfis_por_aluno_pct_PA_PR_v5_10.png" data-title="Perfis adaptativos de inconsistência" src="v5_10/figuras/CH_perfis_por_aluno_pct_PA_PR_v5_10.png" alt="CH_perfis_por_aluno_pct_PA_PR_v5_10.png" loading="lazy" />
+<figcaption class="figcap">
+<div class="title">Perfis adaptativos de inconsistência</div>
+<div class="desc"><p>Resume Xi/Yi em categorias (Sem ocorrências/Baixa/Moderada/Alta/Muito alta) via quantis.</p><ul><li><b>Alta/Muito alta</b>: priorize acompanhamento (monitoria, revisão dirigida, feedback individual).</li><li><b>Comparacao PA vs PR</b>: diferenças sugerem foco de intervenção distinto por UF.</li></ul></div>
+<div class="meta">
+<a class="badge" href="v5_10/figuras/CH_perfis_por_aluno_pct_PA_PR_v5_10.png" target="_blank" rel="noopener">Abrir em nova aba</a>
+</div>
+</figcaption>
+</figure>
+<figure class="fig">
+<span class="zoom-cue" aria-hidden="true"></span>
+<img data-lb="1" data-src="v5_10/figuras/CH_top_acerto_improvavel_items_PA_PR_v5_10.png" data-title="Top itens com acerto improvável" src="v5_10/figuras/CH_top_acerto_improvavel_items_PA_PR_v5_10.png" alt="CH_top_acerto_improvável_items_PA_PR_v5_10.png" loading="lazy" />
+<figcaption class="figcap">
+<div class="title">Top itens com acerto improvável</div>
+<div class="desc"><p>Itens com maior incidência de <b>acertos improváveis</b> (P* baixo e piso c alto).</p><ul><li>Use para <b>auditoria</b>: enunciado, distratores, pistas e aderencia a habilidade.</li><li>Use para <b>feedback docente</b>: evitar conclusao forte sobre aluno baseada apenas nesses itens.</li></ul></div>
+<div class="meta">
+<a class="badge" href="v5_10/figuras/CH_top_acerto_improvavel_items_PA_PR_v5_10.png" target="_blank" rel="noopener">Abrir em nova aba</a>
+<span class="badge">Top 3 (PA): Q25 (17.1%), Q16 (16.9%), Q43 (12.4%)</span>
+<span class="badge">Top 3 (PR): Q31 (29.1%), Q1 (28.0%), Q25 (16.3%)</span>
+</div>
+</figcaption>
+</figure>
+<figure class="fig">
+<span class="zoom-cue" aria-hidden="true"></span>
+<img data-lb="1" data-src="v5_10/figuras/CH_c_vs_taxa_TODOS_ITENS_PA_PR_v5_10.png" data-title="Piso de acerto (c) vs incidência" src="v5_10/figuras/CH_c_vs_taxa_TODOS_ITENS_PA_PR_v5_10.png" alt="CH_c_vs_taxa_TODOS_ITENS_PA_PR_v5_10.png" loading="lazy" />
+<figcaption class="figcap">
+<div class="title">Piso de acerto (c) vs incidência</div>
+<div class="desc"><p>Relaciona o <b>piso de chute (c)</b> com a incidência de acertos improváveis.</p><ul><li><b>c alto</b> + incidência alta: item vulnerável a acerto por eliminação/chute; bom candidato a revisão.</li><li>c baixo + incidência alta: pode apontar item com pistas não capturadas pelo modelo.</li></ul></div>
+<div class="meta">
+<a class="badge" href="v5_10/figuras/CH_c_vs_taxa_TODOS_ITENS_PA_PR_v5_10.png" target="_blank" rel="noopener">Abrir em nova aba</a>
+<span class="badge">Itens com c&gt;=20% (estáveis): PA=9 PR=7</span>
+</div>
+</figcaption>
+</figure>
+</div>
+<details open>
+<summary>Itens por dificuldade (UF=PR)</summary>
+<div class="details-body">
+<p class="note">Classificação baseada no parâmetro b (theta) com limiares fixos. A tabela abaixo lista apenas itens estáveis (a&gt;0 e |b|&lt;=4). Itens instáveis (excluídos aqui): 1.</p>
+<details>
+<summary>Muito fácil (3 itens)</summary>
+<div class="details-body">
+<table>
+<thead><tr><th>Questao</th><th>Item na prova</th><th class="right">Dificuldade (ENEM)</th><th class="right">Acertos (%)</th><th class="right">a</th><th class="right">c</th></tr></thead>
+<tbody>
+<tr><td>Q5</td><td>50</td><td class="right">388.99</td><td class="right">81.73%</td><td class="right">0.799</td><td class="right">0.0%</td></tr>
+<tr><td>Q19</td><td>64</td><td class="right">401.86</td><td class="right">90.05%</td><td class="right">1.500</td><td class="right">0.0%</td></tr>
+<tr><td>Q41</td><td>86</td><td class="right">422.15</td><td class="right">81.75%</td><td class="right">1.002</td><td class="right">0.0%</td></tr>
+</tbody></table>
+</div>
+</details>
+<details>
+<summary>Fácil (2 itens)</summary>
+<div class="details-body">
+<table>
+<thead><tr><th>Questao</th><th>Item na prova</th><th class="right">Dificuldade (ENEM)</th><th class="right">Acertos (%)</th><th class="right">a</th><th class="right">c</th></tr></thead>
+<tbody>
+<tr><td>Q32</td><td>77</td><td class="right">490.79</td><td class="right">71.38%</td><td class="right">1.003</td><td class="right">0.0%</td></tr>
+<tr><td>Q24</td><td>69</td><td class="right">542.27</td><td class="right">61.61%</td><td class="right">0.973</td><td class="right">0.0%</td></tr>
+</tbody></table>
+</div>
+</details>
+<details>
+<summary>Média (12 itens)</summary>
+<div class="details-body">
+<table>
+<thead><tr><th>Questao</th><th>Item na prova</th><th class="right">Dificuldade (ENEM)</th><th class="right">Acertos (%)</th><th class="right">a</th><th class="right">c</th></tr></thead>
+<tbody>
+<tr><td>Q4</td><td>49</td><td class="right">577.64</td><td class="right">65.04%</td><td class="right">2.026</td><td class="right">18.6%</td></tr>
+<tr><td>Q36</td><td>81</td><td class="right">581.99</td><td class="right">59.34%</td><td class="right">0.991</td><td class="right">12.0%</td></tr>
+<tr><td>Q37</td><td>82</td><td class="right">582.90</td><td class="right">59.45%</td><td class="right">1.770</td><td class="right">9.6%</td></tr>
+<tr><td>Q10</td><td>55</td><td class="right">586.22</td><td class="right">52.35%</td><td class="right">0.742</td><td class="right">0.0%</td></tr>
+<tr><td>Q20</td><td>65</td><td class="right">608.63</td><td class="right">59.36%</td><td class="right">1.576</td><td class="right">22.0%</td></tr>
+<tr><td>Q11</td><td>56</td><td class="right">609.12</td><td class="right">52.62%</td><td class="right">0.955</td><td class="right">8.4%</td></tr>
+<tr><td>Q15</td><td>60</td><td class="right">610.73</td><td class="right">56.96%</td><td class="right">1.341</td><td class="right">18.0%</td></tr>
+<tr><td>Q28</td><td>73</td><td class="right">614.52</td><td class="right">61.38%</td><td class="right">1.941</td><td class="right">28.5%</td></tr>
+<tr><td>Q44</td><td>89</td><td class="right">624.68</td><td class="right">46.63%</td><td class="right">0.606</td><td class="right">0.0%</td></tr>
+<tr><td>Q29</td><td>74</td><td class="right">631.42</td><td class="right">46.50%</td><td class="right">0.488</td><td class="right">0.2%</td></tr>
+<tr><td>Q18</td><td>63</td><td class="right">632.72</td><td class="right">47.03%</td><td class="right">1.183</td><td class="right">7.6%</td></tr>
+<tr><td>Q12</td><td>57</td><td class="right">649.98</td><td class="right">49.68%</td><td class="right">1.306</td><td class="right">18.7%</td></tr>
+</tbody></table>
+</div>
+</details>
+<details>
+<summary>Difícil (10 itens)</summary>
+<div class="details-body">
+<table>
+<thead><tr><th>Questao</th><th>Item na prova</th><th class="right">Dificuldade (ENEM)</th><th class="right">Acertos (%)</th><th class="right">a</th><th class="right">c</th></tr></thead>
+<tbody>
+<tr><td>Q14</td><td>59</td><td class="right">659.23</td><td class="right">45.70%</td><td class="right">2.165</td><td class="right">19.6%</td></tr>
+<tr><td>Q22</td><td>67</td><td class="right">660.60</td><td class="right">45.33%</td><td class="right">1.453</td><td class="right">16.1%</td></tr>
+<tr><td>Q34</td><td>79</td><td class="right">662.93</td><td class="right">44.35%</td><td class="right">1.896</td><td class="right">17.8%</td></tr>
+<tr><td>Q3</td><td>48</td><td class="right">666.08</td><td class="right">46.11%</td><td class="right">0.270</td><td class="right">0.9%</td></tr>
+<tr><td>Q43</td><td>88</td><td class="right">669.84</td><td class="right">45.51%</td><td class="right">1.569</td><td class="right">19.9%</td></tr>
+<tr><td>Q6</td><td>51</td><td class="right">672.39</td><td class="right">48.98%</td><td class="right">1.554</td><td class="right">25.6%</td></tr>
+<tr><td>Q8</td><td>53</td><td class="right">673.87</td><td class="right">40.75%</td><td class="right">1.468</td><td class="right">13.3%</td></tr>
+<tr><td>Q2</td><td>47</td><td class="right">693.01</td><td class="right">42.53%</td><td class="right">0.346</td><td class="right">0.5%</td></tr>
+<tr><td>Q45</td><td>90</td><td class="right">696.72</td><td class="right">35.44%</td><td class="right">2.360</td><td class="right">17.1%</td></tr>
+<tr><td>Q7</td><td>52</td><td class="right">706.67</td><td class="right">35.04%</td><td class="right">2.318</td><td class="right">18.9%</td></tr>
+</tbody></table>
+</div>
+</details>
+<details>
+<summary>Muito difícil (16 itens)</summary>
+<div class="details-body">
+<table>
+<thead><tr><th>Questao</th><th>Item na prova</th><th class="right">Dificuldade (ENEM)</th><th class="right">Acertos (%)</th><th class="right">a</th><th class="right">c</th></tr></thead>
+<tbody>
+<tr><td>Q27</td><td>72</td><td class="right">730.53</td><td class="right">23.53%</td><td class="right">3.370</td><td class="right">12.5%</td></tr>
+<tr><td>Q33</td><td>78</td><td class="right">747.90</td><td class="right">34.54%</td><td class="right">1.032</td><td class="right">16.0%</td></tr>
+<tr><td>Q42</td><td>87</td><td class="right">756.27</td><td class="right">14.69%</td><td class="right">3.002</td><td class="right">6.3%</td></tr>
+<tr><td>Q38</td><td>83</td><td class="right">760.32</td><td class="right">27.29%</td><td class="right">1.510</td><td class="right">14.8%</td></tr>
+<tr><td>Q25</td><td>70</td><td class="right">769.62</td><td class="right">32.71%</td><td class="right">1.651</td><td class="right">23.3%</td></tr>
+<tr><td>Q17</td><td>62</td><td class="right">772.83</td><td class="right">32.70%</td><td class="right">0.747</td><td class="right">11.5%</td></tr>
+<tr><td>Q16</td><td>61</td><td class="right">777.01</td><td class="right">33.32%</td><td class="right">1.212</td><td class="right">21.2%</td></tr>
+<tr><td>Q26</td><td>71</td><td class="right">781.57</td><td class="right">26.81%</td><td class="right">1.220</td><td class="right">14.2%</td></tr>
+<tr><td>Q21</td><td>66</td><td class="right">785.51</td><td class="right">16.75%</td><td class="right">2.337</td><td class="right">10.5%</td></tr>
+<tr><td>Q35</td><td>80</td><td class="right">792.01</td><td class="right">35.73%</td><td class="right">0.327</td><td class="right">0.9%</td></tr>
+<tr><td>Q9</td><td>54</td><td class="right">817.28</td><td class="right">22.42%</td><td class="right">2.226</td><td class="right">18.8%</td></tr>
+<tr><td>Q23</td><td>68</td><td class="right">818.02</td><td class="right">16.11%</td><td class="right">1.714</td><td class="right">10.3%</td></tr>
+<tr><td>Q1</td><td>46</td><td class="right">824.20</td><td class="right">35.21%</td><td class="right">1.824</td><td class="right">31.5%</td></tr>
+<tr><td>Q31</td><td>76</td><td class="right">872.68</td><td class="right">33.45%</td><td class="right">1.508</td><td class="right">30.7%</td></tr>
+<tr><td>Q39</td><td>84</td><td class="right">872.74</td><td class="right">31.31%</td><td class="right">0.295</td><td class="right">0.1%</td></tr>
+<tr><td>Q13</td><td>58</td><td class="right">955.16</td><td class="right">26.37%</td><td class="right">0.648</td><td class="right">17.7%</td></tr>
+</tbody></table>
+</div>
+</details>
+</div>
+</details>
+<details>
+<summary>Pontos de atenção: itens com parâmetros instáveis (PA e PR)</summary>
+<div class="details-body">
+<p class="note">Itens instáveis (ex.: a&lt;=0 ou |b|&gt;4) podem indicar ajuste ruim/ruído. Eles não entram nos indicadores agregados (Xi/Yi) e devem ser usados como alerta para revisão do item/material, não para inferência fina sobre alunos.</p>
+<h4>UF PA</h4>
+<table>
+<thead><tr><th>Item</th><th>Item na prova</th><th>Motivo</th><th class="right">a</th><th class="right">b</th><th class="right">b (ENEM)</th><th class="right">c</th></tr></thead>
+<tbody>
+<tr><td>Q1</td><td>46</td><td>|b|&gt;4</td><td class="right">0.173</td><td class="right">4.728</td><td class="right">1072.84</td><td class="right">4.3%</td></tr>
+<tr><td>Q30</td><td>75</td><td>|b|&gt;4</td><td class="right">0.321</td><td class="right">4.133</td><td class="right">1013.30</td><td class="right">4.1%</td></tr>
+</tbody></table>
+<h4>UF PR</h4>
+<table>
+<thead><tr><th>Item</th><th>Item na prova</th><th>Motivo</th><th class="right">a</th><th class="right">b</th><th class="right">b (ENEM)</th><th class="right">c</th></tr></thead>
+<tbody>
+<tr><td>Q30</td><td>75</td><td>|b|&gt;4</td><td class="right">0.228</td><td class="right">4.214</td><td class="right">1021.44</td><td class="right">0.1%</td></tr>
+</tbody></table>
+</div>
+</details>
+</div>
+</div>
+<div class="tab-panel" id="panel-LC" role="tabpanel" aria-labelledby="tab-LC">
+<div class="área">
+<h2>Linguagens e Códigos (LC)</h2>
+<div class="card">
+<h3>Como ler este painel</h3>
+<p class="muted" style="margin:0;">Use os gráficos para identificar (1) diferenças entre UFs, (2) onde o desempenho observado foge do esperado pelo modelo, e (3) quais itens/alunos priorizar. As imagens podem ser ampliadas com um clique.</p>
+</div>
+<div class="grid">
+<figure class="fig">
+<span class="zoom-cue" aria-hidden="true"></span>
+<img data-lb="1" data-src="v5_10/figuras/LC_dist_hist_pct_enem_PA_PR_v5_10.png" data-title="Distribuicao de habilidade (ENEM)" src="v5_10/figuras/LC_dist_hist_pct_enem_PA_PR_v5_10.png" alt="LC_dist_hist_pct_enem_PA_PR_v5_10.png" loading="lazy" />
+<figcaption class="figcap">
+<div class="title">Distribuicao de habilidade (ENEM)</div>
+<div class="desc"><p>Mostra como a proficiência se distribui no grupo de estudantes (PA vs PR) nesta área.</p><ul><li><b>Deslocamento</b>: se a mediana de uma UF está maior, em média ela está mais alta na escala.</li><li><b>Dispersao</b>: caudas longas indicam heterogeneidade; pode demandar trilhas por nivel.</li></ul></div>
+<div class="meta">
+<a class="badge" href="v5_10/figuras/LC_dist_hist_pct_enem_PA_PR_v5_10.png" target="_blank" rel="noopener">Abrir em nova aba</a>
+<span class="badge">Médiana ENEM: PA=604 (IQR 541-668) | PR=607 (IQR 541-668)</span>
+</div>
+</figcaption>
+</figure>
+<figure class="fig">
+<span class="zoom-cue" aria-hidden="true"></span>
+<img data-lb="1" data-src="v5_10/figuras/LC_obs_exp_acertos_PA_PR_v5_10.png" data-title="Observado vs esperado (delta)" src="v5_10/figuras/LC_obs_exp_acertos_PA_PR_v5_10.png" alt="LC_obs_exp_acertos_PA_PR_v5_10.png" loading="lazy" />
+<figcaption class="figcap">
+<div class="title">Observado vs esperado (delta)</div>
+<div class="desc"><p>Compara o desempenho observado com o esperado pelo modelo ao longo da escala de habilidade.</p><ul><li><b>Delta &lt; 0</b>: alunos acertam menos do que o esperado naquela faixa (sinal de lacuna curricular, estratégia, ou dificuldade real maior).</li><li><b>Delta &gt; 0</b>: alunos acertam mais do que o esperado (pode indicar bom ensino local ou itens mais faceis do que o modelo sugere).</li></ul><p class="note">Uso prático: planeje revisão por nivel (básico/intermediário/avançado) a partir das faixas com delta negativo.</p></div>
+<div class="meta">
+<a class="badge" href="v5_10/figuras/LC_obs_exp_acertos_PA_PR_v5_10.png" target="_blank" rel="noopener">Abrir em nova aba</a>
+</div>
+</figcaption>
+</figure>
+<figure class="fig">
+<span class="zoom-cue" aria-hidden="true"></span>
+<img data-lb="1" data-src="v5_10/figuras/LC_eventos_por_aluno_pct_PA_PR_v5_10.png" data-title="Eventos por aluno (Xi/Yi)" src="v5_10/figuras/LC_eventos_por_aluno_pct_PA_PR_v5_10.png" alt="LC_eventos_por_aluno_pct_PA_PR_v5_10.png" loading="lazy" />
+<figcaption class="figcap">
+<div class="title">Eventos por aluno (Xi/Yi)</div>
+<div class="desc"><p>Quantifica quantos itens por aluno foram sinalizados como <b>acerto improvável</b> (Xi) ou <b>erro improvável</b> (Yi).</p><ul><li><b>Cauda a direita</b>: existe um subgrupo com muitos eventos; priorize devolutiva individual.</li><li><b>Yi elevado</b>: frequente em casos de desatenção/leitura/pressa; pode justificar treino de estratégia.</li></ul></div>
+<div class="meta">
+<a class="badge" href="v5_10/figuras/LC_eventos_por_aluno_pct_PA_PR_v5_10.png" target="_blank" rel="noopener">Abrir em nova aba</a>
+<span class="badge">Alunos com &gt;=1 evento: Xi PA=47.3% PR=21.1% | Yi PA=3.0% PR=7.2%</span>
+</div>
+</figcaption>
+</figure>
+<figure class="fig">
+<span class="zoom-cue" aria-hidden="true"></span>
+<img data-lb="1" data-src="v5_10/figuras/LC_perfis_por_aluno_pct_PA_PR_v5_10.png" data-title="Perfis adaptativos de inconsistência" src="v5_10/figuras/LC_perfis_por_aluno_pct_PA_PR_v5_10.png" alt="LC_perfis_por_aluno_pct_PA_PR_v5_10.png" loading="lazy" />
+<figcaption class="figcap">
+<div class="title">Perfis adaptativos de inconsistência</div>
+<div class="desc"><p>Resume Xi/Yi em categorias (Sem ocorrências/Baixa/Moderada/Alta/Muito alta) via quantis.</p><ul><li><b>Alta/Muito alta</b>: priorize acompanhamento (monitoria, revisão dirigida, feedback individual).</li><li><b>Comparacao PA vs PR</b>: diferenças sugerem foco de intervenção distinto por UF.</li></ul></div>
+<div class="meta">
+<a class="badge" href="v5_10/figuras/LC_perfis_por_aluno_pct_PA_PR_v5_10.png" target="_blank" rel="noopener">Abrir em nova aba</a>
+</div>
+</figcaption>
+</figure>
+<figure class="fig">
+<span class="zoom-cue" aria-hidden="true"></span>
+<img data-lb="1" data-src="v5_10/figuras/LC_top_acerto_improvavel_items_PA_PR_v5_10.png" data-title="Top itens com acerto improvável" src="v5_10/figuras/LC_top_acerto_improvavel_items_PA_PR_v5_10.png" alt="LC_top_acerto_improvável_items_PA_PR_v5_10.png" loading="lazy" />
+<figcaption class="figcap">
+<div class="title">Top itens com acerto improvável</div>
+<div class="desc"><p>Itens com maior incidência de <b>acertos improváveis</b> (P* baixo e piso c alto).</p><ul><li>Use para <b>auditoria</b>: enunciado, distratores, pistas e aderencia a habilidade.</li><li>Use para <b>feedback docente</b>: evitar conclusao forte sobre aluno baseada apenas nesses itens.</li></ul></div>
+<div class="meta">
+<a class="badge" href="v5_10/figuras/LC_top_acerto_improvavel_items_PA_PR_v5_10.png" target="_blank" rel="noopener">Abrir em nova aba</a>
+<span class="badge">Top 3 (PA): Q32 (20.5%), Q3 (16.7%), Q15 (9.2%)</span>
+<span class="badge">Top 3 (PR): Q11 (8.8%), Q15 (8.1%), Q3 (6.7%)</span>
+</div>
+</figcaption>
+</figure>
+<figure class="fig">
+<span class="zoom-cue" aria-hidden="true"></span>
+<img data-lb="1" data-src="v5_10/figuras/LC_c_vs_taxa_TODOS_ITENS_PA_PR_v5_10.png" data-title="Piso de acerto (c) vs incidência" src="v5_10/figuras/LC_c_vs_taxa_TODOS_ITENS_PA_PR_v5_10.png" alt="LC_c_vs_taxa_TODOS_ITENS_PA_PR_v5_10.png" loading="lazy" />
+<figcaption class="figcap">
+<div class="title">Piso de acerto (c) vs incidência</div>
+<div class="desc"><p>Relaciona o <b>piso de chute (c)</b> com a incidência de acertos improváveis.</p><ul><li><b>c alto</b> + incidência alta: item vulnerável a acerto por eliminação/chute; bom candidato a revisão.</li><li>c baixo + incidência alta: pode apontar item com pistas não capturadas pelo modelo.</li></ul></div>
+<div class="meta">
+<a class="badge" href="v5_10/figuras/LC_c_vs_taxa_TODOS_ITENS_PA_PR_v5_10.png" target="_blank" rel="noopener">Abrir em nova aba</a>
+<span class="badge">Itens com c&gt;=20% (estáveis): PA=10 PR=12</span>
+</div>
+</figcaption>
+</figure>
+</div>
+<details open>
+<summary>Itens por dificuldade (UF=PR)</summary>
+<div class="details-body">
+<p class="note">Classificação baseada no parâmetro b (theta) com limiares fixos. A tabela abaixo lista apenas itens estáveis (a&gt;0 e |b|&lt;=4). Itens instáveis (excluídos aqui): 0.</p>
+<details>
+<summary>Muito fácil (4 itens)</summary>
+<div class="details-body">
+<table>
+<thead><tr><th>Questao</th><th>Item na prova</th><th class="right">Dificuldade (ENEM)</th><th class="right">Acertos (%)</th><th class="right">a</th><th class="right">c</th></tr></thead>
+<tbody>
+<tr><td>Q34</td><td>34</td><td class="right">429.62</td><td class="right">89.02%</td><td class="right">1.770</td><td class="right">4.7%</td></tr>
+<tr><td>Q35</td><td>35</td><td class="right">434.11</td><td class="right">70.54%</td><td class="right">0.563</td><td class="right">0.0%</td></tr>
+<tr><td>Q10</td><td>10</td><td class="right">450.63</td><td class="right">70.80%</td><td class="right">0.646</td><td class="right">0.0%</td></tr>
+<tr><td>Q12</td><td>12</td><td class="right">461.21</td><td class="right">56.76%</td><td class="right">0.197</td><td class="right">0.1%</td></tr>
+</tbody></table>
+</div>
+</details>
+<details>
+<summary>Fácil (4 itens)</summary>
+<div class="details-body">
+<table>
+<thead><tr><th>Questao</th><th>Item na prova</th><th class="right">Dificuldade (ENEM)</th><th class="right">Acertos (%)</th><th class="right">a</th><th class="right">c</th></tr></thead>
+<tbody>
+<tr><td>Q41</td><td>41</td><td class="right">475.01</td><td class="right">77.09%</td><td class="right">1.246</td><td class="right">0.0%</td></tr>
+<tr><td>Q24</td><td>24</td><td class="right">481.47</td><td class="right">72.03%</td><td class="right">0.937</td><td class="right">0.0%</td></tr>
+<tr><td>Q13</td><td>13</td><td class="right">508.16</td><td class="right">64.94%</td><td class="right">0.749</td><td class="right">0.0%</td></tr>
+<tr><td>Q43</td><td>43</td><td class="right">525.12</td><td class="right">66.81%</td><td class="right">1.172</td><td class="right">0.0%</td></tr>
+</tbody></table>
+</div>
+</details>
+<details>
+<summary>Média (17 itens)</summary>
+<div class="details-body">
+<table>
+<thead><tr><th>Questao</th><th>Item na prova</th><th class="right">Dificuldade (ENEM)</th><th class="right">Acertos (%)</th><th class="right">a</th><th class="right">c</th></tr></thead>
+<tbody>
+<tr><td>Q31</td><td>31</td><td class="right">549.89</td><td class="right">68.06%</td><td class="right">1.430</td><td class="right">13.6%</td></tr>
+<tr><td>Q36</td><td>36</td><td class="right">554.24</td><td class="right">63.73%</td><td class="right">1.358</td><td class="right">5.5%</td></tr>
+<tr><td>Q44</td><td>44</td><td class="right">574.80</td><td class="right">64.93%</td><td class="right">1.772</td><td class="right">17.0%</td></tr>
+<tr><td>Q4</td><td>4</td><td class="right">575.25</td><td class="right">65.10%</td><td class="right">1.065</td><td class="right">21.5%</td></tr>
+<tr><td>Q5</td><td>5</td><td class="right">586.26</td><td class="right">67.56%</td><td class="right">1.713</td><td class="right">28.8%</td></tr>
+<tr><td>Q28</td><td>28</td><td class="right">586.44</td><td class="right">51.72%</td><td class="right">0.523</td><td class="right">0.0%</td></tr>
+<tr><td>Q30</td><td>30</td><td class="right">593.74</td><td class="right">51.16%</td><td class="right">0.747</td><td class="right">0.0%</td></tr>
+<tr><td>Q21</td><td>21</td><td class="right">594.61</td><td class="right">50.51%</td><td class="right">0.360</td><td class="right">0.0%</td></tr>
+<tr><td>Q17</td><td>17</td><td class="right">611.00</td><td class="right">48.45%</td><td class="right">0.656</td><td class="right">0.0%</td></tr>
+<tr><td>Q3</td><td>3</td><td class="right">621.43</td><td class="right">64.45%</td><td class="right">2.114</td><td class="right">36.3%</td></tr>
+<tr><td>Q2</td><td>2</td><td class="right">624.50</td><td class="right">59.93%</td><td class="right">1.772</td><td class="right">29.0%</td></tr>
+<tr><td>Q6</td><td>6</td><td class="right">625.93</td><td class="right">57.47%</td><td class="right">0.724</td><td class="right">21.3%</td></tr>
+<tr><td>Q14</td><td>14</td><td class="right">629.13</td><td class="right">45.89%</td><td class="right">0.663</td><td class="right">0.3%</td></tr>
+<tr><td>Q9</td><td>9</td><td class="right">630.58</td><td class="right">48.48%</td><td class="right">1.543</td><td class="right">10.7%</td></tr>
+<tr><td>Q7</td><td>7</td><td class="right">632.21</td><td class="right">58.62%</td><td class="right">0.590</td><td class="right">23.8%</td></tr>
+<tr><td>Q23</td><td>23</td><td class="right">636.74</td><td class="right">47.93%</td><td class="right">1.158</td><td class="right">10.2%</td></tr>
+<tr><td>Q29</td><td>29</td><td class="right">640.00</td><td class="right">54.68%</td><td class="right">1.132</td><td class="right">22.7%</td></tr>
+</tbody></table>
+</div>
+</details>
+<details>
+<summary>Difícil (7 itens)</summary>
+<div class="details-body">
+<table>
+<thead><tr><th>Questao</th><th>Item na prova</th><th class="right">Dificuldade (ENEM)</th><th class="right">Acertos (%)</th><th class="right">a</th><th class="right">c</th></tr></thead>
+<tbody>
+<tr><td>Q1</td><td>1</td><td class="right">654.08</td><td class="right">55.75%</td><td class="right">1.261</td><td class="right">29.1%</td></tr>
+<tr><td>Q22</td><td>22</td><td class="right">675.56</td><td class="right">41.22%</td><td class="right">0.499</td><td class="right">0.0%</td></tr>
+<tr><td>Q18</td><td>18</td><td class="right">680.61</td><td class="right">49.77%</td><td class="right">1.139</td><td class="right">25.3%</td></tr>
+<tr><td>Q39</td><td>39</td><td class="right">699.14</td><td class="right">39.94%</td><td class="right">0.803</td><td class="right">10.0%</td></tr>
+<tr><td>Q11</td><td>11</td><td class="right">707.53</td><td class="right">48.12%</td><td class="right">1.354</td><td class="right">30.6%</td></tr>
+<tr><td>Q37</td><td>37</td><td class="right">708.01</td><td class="right">39.16%</td><td class="right">0.427</td><td class="right">0.0%</td></tr>
+<tr><td>Q8</td><td>8</td><td class="right">715.58</td><td class="right">43.17%</td><td class="right">1.157</td><td class="right">23.4%</td></tr>
+</tbody></table>
+</div>
+</details>
+<details>
+<summary>Muito difícil (13 itens)</summary>
+<div class="details-body">
+<table>
+<thead><tr><th>Questao</th><th>Item na prova</th><th class="right">Dificuldade (ENEM)</th><th class="right">Acertos (%)</th><th class="right">a</th><th class="right">c</th></tr></thead>
+<tbody>
+<tr><td>Q45</td><td>45</td><td class="right">729.71</td><td class="right">28.40%</td><td class="right">1.672</td><td class="right">12.3%</td></tr>
+<tr><td>Q19</td><td>19</td><td class="right">734.24</td><td class="right">32.89%</td><td class="right">1.161</td><td class="right">13.5%</td></tr>
+<tr><td>Q27</td><td>27</td><td class="right">740.37</td><td class="right">30.10%</td><td class="right">1.416</td><td class="right">14.1%</td></tr>
+<tr><td>Q16</td><td>16</td><td class="right">750.63</td><td class="right">17.83%</td><td class="right">2.360</td><td class="right">7.5%</td></tr>
+<tr><td>Q32</td><td>32</td><td class="right">794.18</td><td class="right">27.79%</td><td class="right">1.513</td><td class="right">19.7%</td></tr>
+<tr><td>Q26</td><td>26</td><td class="right">842.97</td><td class="right">11.68%</td><td class="right">2.852</td><td class="right">10.2%</td></tr>
+<tr><td>Q40</td><td>40</td><td class="right">843.58</td><td class="right">21.12%</td><td class="right">2.324</td><td class="right">19.2%</td></tr>
+<tr><td>Q15</td><td>15</td><td class="right">854.13</td><td class="right">37.72%</td><td class="right">0.716</td><td class="right">25.9%</td></tr>
+<tr><td>Q20</td><td>20</td><td class="right">854.41</td><td class="right">29.79%</td><td class="right">0.347</td><td class="right">0.1%</td></tr>
+<tr><td>Q33</td><td>33</td><td class="right">867.96</td><td class="right">23.03%</td><td class="right">0.818</td><td class="right">12.2%</td></tr>
+<tr><td>Q38</td><td>38</td><td class="right">868.11</td><td class="right">9.01%</td><td class="right">2.097</td><td class="right">7.2%</td></tr>
+<tr><td>Q25</td><td>25</td><td class="right">889.76</td><td class="right">7.35%</td><td class="right">2.194</td><td class="right">6.3%</td></tr>
+<tr><td>Q42</td><td>42</td><td class="right">894.35</td><td class="right">20.73%</td><td class="right">1.065</td><td class="right">15.4%</td></tr>
+</tbody></table>
+</div>
+</details>
+</div>
+</details>
+<details>
+<summary>Pontos de atenção: itens com parâmetros instáveis (PA e PR)</summary>
+<div class="details-body">
+<p class="note">Itens instáveis (ex.: a&lt;=0 ou |b|&gt;4) podem indicar ajuste ruim/ruído. Eles não entram nos indicadores agregados (Xi/Yi) e devem ser usados como alerta para revisão do item/material, não para inferência fina sobre alunos.</p>
+<h4>UF PA</h4>
+<table>
+<thead><tr><th>Item</th><th>Item na prova</th><th>Motivo</th><th class="right">a</th><th class="right">b</th><th class="right">b (ENEM)</th><th class="right">c</th></tr></thead>
+<tbody>
+<tr><td>Q25</td><td>25</td><td>a&lt;=0</td><td class="right">-1.736</td><td class="right">-3.139</td><td class="right">286.11</td><td class="right">6.7%</td></tr>
+<tr><td>Q26</td><td>26</td><td>a&lt;=0</td><td class="right">-1.528</td><td class="right">-3.472</td><td class="right">252.81</td><td class="right">11.7%</td></tr>
+</tbody></table>
+<h4>UF PR</h4>
+<p class="muted" style="margin:0 0 10px;">Nenhum item instavel nesta UF (no criterio a&lt;=0 ou |b|&gt;4).</p>
+</div>
+</details>
+</div>
+</div>
+<div class="tab-panel" id="panel-MT" role="tabpanel" aria-labelledby="tab-MT">
+<div class="área">
+<h2>Matemática (MT)</h2>
+<div class="card">
+<h3>Como ler este painel</h3>
+<p class="muted" style="margin:0;">Use os gráficos para identificar (1) diferenças entre UFs, (2) onde o desempenho observado foge do esperado pelo modelo, e (3) quais itens/alunos priorizar. As imagens podem ser ampliadas com um clique.</p>
+</div>
+<div class="grid">
+<figure class="fig">
+<span class="zoom-cue" aria-hidden="true"></span>
+<img data-lb="1" data-src="v5_10/figuras/MT_dist_hist_pct_enem_PA_PR_v5_10.png" data-title="Distribuicao de habilidade (ENEM)" src="v5_10/figuras/MT_dist_hist_pct_enem_PA_PR_v5_10.png" alt="MT_dist_hist_pct_enem_PA_PR_v5_10.png" loading="lazy" />
+<figcaption class="figcap">
+<div class="title">Distribuicao de habilidade (ENEM)</div>
+<div class="desc"><p>Mostra como a proficiência se distribui no grupo de estudantes (PA vs PR) nesta área.</p><ul><li><b>Deslocamento</b>: se a mediana de uma UF está maior, em média ela está mais alta na escala.</li><li><b>Dispersao</b>: caudas longas indicam heterogeneidade; pode demandar trilhas por nivel.</li></ul></div>
+<div class="meta">
+<a class="badge" href="v5_10/figuras/MT_dist_hist_pct_enem_PA_PR_v5_10.png" target="_blank" rel="noopener">Abrir em nova aba</a>
+<span class="badge">Médiana ENEM: PA=605 (IQR 556-665) | PR=603 (IQR 547-665)</span>
+</div>
+</figcaption>
+</figure>
+<figure class="fig">
+<span class="zoom-cue" aria-hidden="true"></span>
+<img data-lb="1" data-src="v5_10/figuras/MT_obs_exp_acertos_PA_PR_v5_10.png" data-title="Observado vs esperado (delta)" src="v5_10/figuras/MT_obs_exp_acertos_PA_PR_v5_10.png" alt="MT_obs_exp_acertos_PA_PR_v5_10.png" loading="lazy" />
+<figcaption class="figcap">
+<div class="title">Observado vs esperado (delta)</div>
+<div class="desc"><p>Compara o desempenho observado com o esperado pelo modelo ao longo da escala de habilidade.</p><ul><li><b>Delta &lt; 0</b>: alunos acertam menos do que o esperado naquela faixa (sinal de lacuna curricular, estratégia, ou dificuldade real maior).</li><li><b>Delta &gt; 0</b>: alunos acertam mais do que o esperado (pode indicar bom ensino local ou itens mais faceis do que o modelo sugere).</li></ul><p class="note">Uso prático: planeje revisão por nivel (básico/intermediário/avançado) a partir das faixas com delta negativo.</p></div>
+<div class="meta">
+<a class="badge" href="v5_10/figuras/MT_obs_exp_acertos_PA_PR_v5_10.png" target="_blank" rel="noopener">Abrir em nova aba</a>
+</div>
+</figcaption>
+</figure>
+<figure class="fig">
+<span class="zoom-cue" aria-hidden="true"></span>
+<img data-lb="1" data-src="v5_10/figuras/MT_eventos_por_aluno_pct_PA_PR_v5_10.png" data-title="Eventos por aluno (Xi/Yi)" src="v5_10/figuras/MT_eventos_por_aluno_pct_PA_PR_v5_10.png" alt="MT_eventos_por_aluno_pct_PA_PR_v5_10.png" loading="lazy" />
+<figcaption class="figcap">
+<div class="title">Eventos por aluno (Xi/Yi)</div>
+<div class="desc"><p>Quantifica quantos itens por aluno foram sinalizados como <b>acerto improvável</b> (Xi) ou <b>erro improvável</b> (Yi).</p><ul><li><b>Cauda a direita</b>: existe um subgrupo com muitos eventos; priorize devolutiva individual.</li><li><b>Yi elevado</b>: frequente em casos de desatenção/leitura/pressa; pode justificar treino de estratégia.</li></ul></div>
+<div class="meta">
+<a class="badge" href="v5_10/figuras/MT_eventos_por_aluno_pct_PA_PR_v5_10.png" target="_blank" rel="noopener">Abrir em nova aba</a>
+<span class="badge">Alunos com &gt;=1 evento: Xi PA=87.4% PR=81.9% | Yi PA=0.8% PR=2.5%</span>
+</div>
+</figcaption>
+</figure>
+<figure class="fig">
+<span class="zoom-cue" aria-hidden="true"></span>
+<img data-lb="1" data-src="v5_10/figuras/MT_perfis_por_aluno_pct_PA_PR_v5_10.png" data-title="Perfis adaptativos de inconsistência" src="v5_10/figuras/MT_perfis_por_aluno_pct_PA_PR_v5_10.png" alt="MT_perfis_por_aluno_pct_PA_PR_v5_10.png" loading="lazy" />
+<figcaption class="figcap">
+<div class="title">Perfis adaptativos de inconsistência</div>
+<div class="desc"><p>Resume Xi/Yi em categorias (Sem ocorrências/Baixa/Moderada/Alta/Muito alta) via quantis.</p><ul><li><b>Alta/Muito alta</b>: priorize acompanhamento (monitoria, revisão dirigida, feedback individual).</li><li><b>Comparacao PA vs PR</b>: diferenças sugerem foco de intervenção distinto por UF.</li></ul></div>
+<div class="meta">
+<a class="badge" href="v5_10/figuras/MT_perfis_por_aluno_pct_PA_PR_v5_10.png" target="_blank" rel="noopener">Abrir em nova aba</a>
+</div>
+</figcaption>
+</figure>
+<figure class="fig">
+<span class="zoom-cue" aria-hidden="true"></span>
+<img data-lb="1" data-src="v5_10/figuras/MT_top_acerto_improvavel_items_PA_PR_v5_10.png" data-title="Top itens com acerto improvável" src="v5_10/figuras/MT_top_acerto_improvavel_items_PA_PR_v5_10.png" alt="MT_top_acerto_improvável_items_PA_PR_v5_10.png" loading="lazy" />
+<figcaption class="figcap">
+<div class="title">Top itens com acerto improvável</div>
+<div class="desc"><p>Itens com maior incidência de <b>acertos improváveis</b> (P* baixo e piso c alto).</p><ul><li>Use para <b>auditoria</b>: enunciado, distratores, pistas e aderencia a habilidade.</li><li>Use para <b>feedback docente</b>: evitar conclusao forte sobre aluno baseada apenas nesses itens.</li></ul></div>
+<div class="meta">
+<a class="badge" href="v5_10/figuras/MT_top_acerto_improvavel_items_PA_PR_v5_10.png" target="_blank" rel="noopener">Abrir em nova aba</a>
+<span class="badge">Top 3 (PA): Q20 (27.6%), Q29 (25.8%), Q1 (23.1%)</span>
+<span class="badge">Top 3 (PR): Q20 (25.0%), Q1 (21.1%), Q9 (20.3%)</span>
+</div>
+</figcaption>
+</figure>
+<figure class="fig">
+<span class="zoom-cue" aria-hidden="true"></span>
+<img data-lb="1" data-src="v5_10/figuras/MT_c_vs_taxa_TODOS_ITENS_PA_PR_v5_10.png" data-title="Piso de acerto (c) vs incidência" src="v5_10/figuras/MT_c_vs_taxa_TODOS_ITENS_PA_PR_v5_10.png" alt="MT_c_vs_taxa_TODOS_ITENS_PA_PR_v5_10.png" loading="lazy" />
+<figcaption class="figcap">
+<div class="title">Piso de acerto (c) vs incidência</div>
+<div class="desc"><p>Relaciona o <b>piso de chute (c)</b> com a incidência de acertos improváveis.</p><ul><li><b>c alto</b> + incidência alta: item vulnerável a acerto por eliminação/chute; bom candidato a revisão.</li><li>c baixo + incidência alta: pode apontar item com pistas não capturadas pelo modelo.</li></ul></div>
+<div class="meta">
+<a class="badge" href="v5_10/figuras/MT_c_vs_taxa_TODOS_ITENS_PA_PR_v5_10.png" target="_blank" rel="noopener">Abrir em nova aba</a>
+<span class="badge">Itens com c&gt;=20% (estáveis): PA=10 PR=14</span>
+</div>
+</figcaption>
+</figure>
+</div>
+<details open>
+<summary>Itens por dificuldade (UF=PR)</summary>
+<div class="details-body">
+<p class="note">Classificação baseada no parâmetro b (theta) com limiares fixos. A tabela abaixo lista apenas itens estáveis (a&gt;0 e |b|&lt;=4). Itens instáveis (excluídos aqui): 5.</p>
+<details>
+<summary>Muito fácil (0 itens)</summary>
+<div class="details-body">
+<p class="muted" style="margin:0;">Nenhum item nesta categoria.</p>
+</div>
+</details>
+<details>
+<summary>Fácil (1 itens)</summary>
+<div class="details-body">
+<table>
+<thead><tr><th>Questao</th><th>Item na prova</th><th class="right">Dificuldade (ENEM)</th><th class="right">Acertos (%)</th><th class="right">a</th><th class="right">c</th></tr></thead>
+<tbody>
+<tr><td>Q42</td><td>177</td><td class="right">519.07</td><td class="right">67.34%</td><td class="right">1.112</td><td class="right">0.0%</td></tr>
+</tbody></table>
+</div>
+</details>
+<details>
+<summary>Média (5 itens)</summary>
+<div class="details-body">
+<table>
+<thead><tr><th>Questao</th><th>Item na prova</th><th class="right">Dificuldade (ENEM)</th><th class="right">Acertos (%)</th><th class="right">a</th><th class="right">c</th></tr></thead>
+<tbody>
+<tr><td>Q15</td><td>150</td><td class="right">583.09</td><td class="right">53.95%</td><td class="right">1.094</td><td class="right">0.5%</td></tr>
+<tr><td>Q13</td><td>148</td><td class="right">584.14</td><td class="right">67.90%</td><td class="right">1.714</td><td class="right">29.7%</td></tr>
+<tr><td>Q17</td><td>152</td><td class="right">586.29</td><td class="right">63.50%</td><td class="right">2.363</td><td class="right">20.2%</td></tr>
+<tr><td>Q44</td><td>179</td><td class="right">589.93</td><td class="right">54.15%</td><td class="right">1.211</td><td class="right">3.8%</td></tr>
+<tr><td>Q34</td><td>169</td><td class="right">644.54</td><td class="right">50.96%</td><td class="right">1.270</td><td class="right">19.1%</td></tr>
+</tbody></table>
+</div>
+</details>
+<details>
+<summary>Difícil (3 itens)</summary>
+<div class="details-body">
+<table>
+<thead><tr><th>Questao</th><th>Item na prova</th><th class="right">Dificuldade (ENEM)</th><th class="right">Acertos (%)</th><th class="right">a</th><th class="right">c</th></tr></thead>
+<tbody>
+<tr><td>Q4</td><td>139</td><td class="right">695.87</td><td class="right">38.61%</td><td class="right">2.521</td><td class="right">21.6%</td></tr>
+<tr><td>Q30</td><td>165</td><td class="right">697.90</td><td class="right">36.87%</td><td class="right">1.931</td><td class="right">17.6%</td></tr>
+<tr><td>Q36</td><td>171</td><td class="right">698.41</td><td class="right">28.07%</td><td class="right">2.070</td><td class="right">7.0%</td></tr>
+</tbody></table>
+</div>
+</details>
+<details>
+<summary>Muito difícil (29 itens)</summary>
+<div class="details-body">
+<table>
+<thead><tr><th>Questao</th><th>Item na prova</th><th class="right">Dificuldade (ENEM)</th><th class="right">Acertos (%)</th><th class="right">a</th><th class="right">c</th></tr></thead>
+<tbody>
+<tr><td>Q41</td><td>176</td><td class="right">728.01</td><td class="right">24.32%</td><td class="right">2.514</td><td class="right">11.0%</td></tr>
+<tr><td>Q38</td><td>173</td><td class="right">732.51</td><td class="right">34.00%</td><td class="right">2.353</td><td class="right">22.7%</td></tr>
+<tr><td>Q14</td><td>149</td><td class="right">736.60</td><td class="right">41.77%</td><td class="right">0.833</td><td class="right">20.2%</td></tr>
+<tr><td>Q35</td><td>170</td><td class="right">750.47</td><td class="right">24.88%</td><td class="right">3.992</td><td class="right">17.5%</td></tr>
+<tr><td>Q1</td><td>136</td><td class="right">754.12</td><td class="right">34.47%</td><td class="right">2.642</td><td class="right">26.9%</td></tr>
+<tr><td>Q40</td><td>175</td><td class="right">760.72</td><td class="right">29.19%</td><td class="right">1.262</td><td class="right">14.6%</td></tr>
+<tr><td>Q12</td><td>147</td><td class="right">778.02</td><td class="right">33.49%</td><td class="right">0.620</td><td class="right">9.4%</td></tr>
+<tr><td>Q19</td><td>154</td><td class="right">780.05</td><td class="right">24.99%</td><td class="right">3.140</td><td class="right">20.0%</td></tr>
+<tr><td>Q27</td><td>162</td><td class="right">780.41</td><td class="right">29.98%</td><td class="right">1.194</td><td class="right">17.4%</td></tr>
+<tr><td>Q7</td><td>142</td><td class="right">780.63</td><td class="right">25.71%</td><td class="right">3.140</td><td class="right">20.8%</td></tr>
+<tr><td>Q29</td><td>164</td><td class="right">784.14</td><td class="right">24.52%</td><td class="right">3.564</td><td class="right">20.2%</td></tr>
+<tr><td>Q22</td><td>157</td><td class="right">792.28</td><td class="right">19.50%</td><td class="right">3.109</td><td class="right">15.2%</td></tr>
+<tr><td>Q20</td><td>155</td><td class="right">795.71</td><td class="right">30.63%</td><td class="right">3.593</td><td class="right">27.5%</td></tr>
+<tr><td>Q3</td><td>138</td><td class="right">798.17</td><td class="right">24.01%</td><td class="right">4.229</td><td class="right">21.0%</td></tr>
+<tr><td>Q5</td><td>140</td><td class="right">801.18</td><td class="right">33.85%</td><td class="right">0.862</td><td class="right">19.3%</td></tr>
+<tr><td>Q39</td><td>174</td><td class="right">803.79</td><td class="right">17.24%</td><td class="right">2.216</td><td class="right">12.1%</td></tr>
+<tr><td>Q45</td><td>180</td><td class="right">807.50</td><td class="right">9.46%</td><td class="right">6.395</td><td class="right">7.0%</td></tr>
+<tr><td>Q18</td><td>153</td><td class="right">809.61</td><td class="right">14.42%</td><td class="right">4.052</td><td class="right">11.7%</td></tr>
+<tr><td>Q37</td><td>172</td><td class="right">810.04</td><td class="right">19.09%</td><td class="right">4.680</td><td class="right">16.8%</td></tr>
+<tr><td>Q32</td><td>167</td><td class="right">813.32</td><td class="right">15.32%</td><td class="right">2.420</td><td class="right">11.3%</td></tr>
+<tr><td>Q8</td><td>143</td><td class="right">818.38</td><td class="right">24.21%</td><td class="right">1.796</td><td class="right">19.2%</td></tr>
+<tr><td>Q28</td><td>163</td><td class="right">819.81</td><td class="right">31.40%</td><td class="right">0.673</td><td class="right">13.7%</td></tr>
+<tr><td>Q31</td><td>166</td><td class="right">822.00</td><td class="right">27.05%</td><td class="right">0.470</td><td class="right">0.0%</td></tr>
+<tr><td>Q16</td><td>151</td><td class="right">825.03</td><td class="right">35.75%</td><td class="right">0.485</td><td class="right">12.9%</td></tr>
+<tr><td>Q26</td><td>161</td><td class="right">827.64</td><td class="right">31.08%</td><td class="right">0.950</td><td class="right">20.2%</td></tr>
+<tr><td>Q9</td><td>144</td><td class="right">830.46</td><td class="right">23.45%</td><td class="right">3.059</td><td class="right">21.5%</td></tr>
+<tr><td>Q21</td><td>156</td><td class="right">864.88</td><td class="right">15.33%</td><td class="right">2.961</td><td class="right">14.3%</td></tr>
+<tr><td>Q24</td><td>159</td><td class="right">867.06</td><td class="right">30.83%</td><td class="right">1.005</td><td class="right">23.8%</td></tr>
+<tr><td>Q10</td><td>145</td><td class="right">877.37</td><td class="right">18.20%</td><td class="right">2.058</td><td class="right">16.5%</td></tr>
+</tbody></table>
+</div>
+</details>
+</div>
+</details>
+<details>
+<summary>Pontos de atenção: itens com parâmetros instáveis (PA e PR)</summary>
+<div class="details-body">
+<p class="note">Itens instáveis (ex.: a&lt;=0 ou |b|&gt;4) podem indicar ajuste ruim/ruído. Eles não entram nos indicadores agregados (Xi/Yi) e devem ser usados como alerta para revisão do item/material, não para inferência fina sobre alunos.</p>
+<h4>UF PA</h4>
+<table>
+<thead><tr><th>Item</th><th>Item na prova</th><th>Motivo</th><th class="right">a</th><th class="right">b</th><th class="right">b (ENEM)</th><th class="right">c</th></tr></thead>
+<tbody>
+<tr><td>Q10</td><td>145</td><td>a&lt;=0</td><td class="right">-6.847</td><td class="right">-2.459</td><td class="right">354.07</td><td class="right">17.6%</td></tr>
+<tr><td>Q25</td><td>160</td><td>a&lt;=0, |b|&gt;4</td><td class="right">-0.096</td><td class="right">-17.054</td><td class="right">-1105.44</td><td class="right">7.1%</td></tr>
+<tr><td>Q2</td><td>137</td><td>|b|&gt;4</td><td class="right">0.116</td><td class="right">14.459</td><td class="right">2045.92</td><td class="right">10.8%</td></tr>
+<tr><td>Q21</td><td>156</td><td>|b|&gt;4</td><td class="right">0.077</td><td class="right">25.092</td><td class="right">3109.21</td><td class="right">1.8%</td></tr>
+<tr><td>Q23</td><td>158</td><td>|b|&gt;4</td><td class="right">0.286</td><td class="right">5.154</td><td class="right">1115.44</td><td class="right">8.4%</td></tr>
+<tr><td>Q33</td><td>168</td><td>|b|&gt;4</td><td class="right">0.353</td><td class="right">6.187</td><td class="right">1218.73</td><td class="right">14.9%</td></tr>
+<tr><td>Q43</td><td>178</td><td>|b|&gt;4</td><td class="right">0.178</td><td class="right">10.226</td><td class="right">1622.60</td><td class="right">4.6%</td></tr>
+</tbody></table>
+<h4>UF PR</h4>
+<table>
+<thead><tr><th>Item</th><th>Item na prova</th><th>Motivo</th><th class="right">a</th><th class="right">b</th><th class="right">b (ENEM)</th><th class="right">c</th></tr></thead>
+<tbody>
+<tr><td>Q2</td><td>137</td><td>|b|&gt;4</td><td class="right">0.158</td><td class="right">15.880</td><td class="right">2187.98</td><td class="right">19.7%</td></tr>
+<tr><td>Q23</td><td>158</td><td>|b|&gt;4</td><td class="right">0.163</td><td class="right">6.135</td><td class="right">1213.50</td><td class="right">2.7%</td></tr>
+<tr><td>Q25</td><td>160</td><td>|b|&gt;4</td><td class="right">0.017</td><td class="right">90.087</td><td class="right">9608.67</td><td class="right">4.1%</td></tr>
+<tr><td>Q33</td><td>168</td><td>|b|&gt;4</td><td class="right">0.632</td><td class="right">4.819</td><td class="right">1081.89</td><td class="right">23.6%</td></tr>
+<tr><td>Q43</td><td>178</td><td>|b|&gt;4</td><td class="right">0.664</td><td class="right">5.378</td><td class="right">1137.79</td><td class="right">17.1%</td></tr>
+</tbody></table>
+</div>
+</details>
+</div>
+</div>
+</body></html>

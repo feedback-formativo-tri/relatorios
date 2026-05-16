@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Relatório do Aluno - A008</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet" />
+  <style>
+    :root{--bg0:#fbf7ef;--bg1:#f4efe5;--card:#ffffff;--ink:#1f2328;--muted:#5f5a52;--line:#e6dfd3;--accent:#1f5e4b;--accent2:#b24b2a;--shadow:0 10px 30px rgba(25,20,10,.08);--radius:16px;}
+    *{box-sizing:border-box;}
+    body{font-family:'Source Serif 4', Georgia, serif; color:var(--ink); background: radial-gradient(1200px 420px at 15% -10%, rgba(31,94,75,.18), transparent 55%), radial-gradient(900px 360px at 85% 0%, rgba(178,75,42,.16), transparent 55%), linear-gradient(180deg,var(--bg0),var(--bg1)); max-width:1400px; margin:24px auto; padding:0 16px 40px;}
+    h1{font-family:'IBM Plex Sans', ui-sans-serif, system-ui; font-size:30px; margin:0 0 6px; letter-spacing:-0.01em;}
+    .muted{color:var(--muted);}
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .top{background:rgba(255,255,255,.78); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:14px 14px 10px; margin:0 0 14px;}
+    .tabs{display:flex; gap:10px; flex-wrap:wrap; margin:14px 0 10px;}
+    .tab-btn{appearance:none; border:1px solid var(--line); background:rgba(255,255,255,.65); padding:10px 12px; border-radius:999px; cursor:pointer; font-weight:700; font-family:'IBM Plex Sans', ui-sans-serif;}
+    .tab-btn[aria-selected="true"]{background:linear-gradient(180deg,#1f5e4b,#174a3b); color:#fff; border-color:#174a3b;}
+    .tab-panel{display:none; animation:fadein .25s ease-out;}
+    .tab-panel.active{display:block;}
+    @keyframes fadein{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);} }
+    .summary{margin:14px 0; padding:12px 12px; border:1px solid var(--line); border-radius:var(--radius); background:rgba(255,255,255,.78); box-shadow:0 8px 24px rgba(25,20,10,.06);}
+    .summary h3{margin:0 0 8px; font-size:16px; font-family:'IBM Plex Sans', ui-sans-serif;}
+    .summary p{margin:6px 0;}
+    .summary table{border-collapse:collapse; width:100%; margin:10px 0 0; font-size:14px;}
+    .summary th,.summary td{border:1px solid rgba(230,223,211,.9); padding:7px 9px; text-align:left;}
+    .summary th{background:rgba(244,239,229,.85); font-family:'IBM Plex Sans', ui-sans-serif;}
+    .pill{display:inline-block; padding:2px 8px; border-radius:999px; border:1px solid var(--line); background:rgba(255,255,255,.75); font-weight:800; font-family:'IBM Plex Sans', ui-sans-serif;}
+    details{margin:10px 0; border:1px solid var(--line); border-radius:14px; overflow:hidden; background:rgba(255,255,255,.78); box-shadow:0 8px 24px rgba(25,20,10,.06);}
+    summary{cursor:pointer; font-weight:800; padding:10px 12px 10px 36px; font-family:'IBM Plex Sans', ui-sans-serif; list-style:none; position:relative;}
+    summary::-webkit-details-marker{display:none;}
+    summary::before{content:''; position:absolute; left:14px; top:50%; transform:translateY(-50%); width:0; height:0; border-top:6px solid transparent; border-bottom:6px solid transparent; border-left:7px solid rgba(31,94,75,.85); transition:transform .14s ease;}
+    details[open] > summary::before{transform:translateY(-50%) rotate(90deg);}
+    .detail-body{padding:10px 12px;}
+    iframe{width:100%; height:860px; border:1px solid rgba(230,223,211,.9); border-radius:14px; background:#fff;}
+  </style>
+</head>
+<body>
+<div class="top">
+<h1>Relatório do Aluno - A008</h1>
+<p class="muted" style="margin:0;">Amostra publicada: itens selecionados por dificuldade (fácil/mediano/difícil) em cada área.</p>
+<p class="muted" style="margin:8px 0 0;"><a href="../index.html">Voltar para lista de alunos</a> | <a href="../../artefatos/index.html">Ver relatórios por item</a></p>
+</div>
+<div class="tabs" role="tablist" aria-label="Áreas do conhecimento">
+<button class="tab-btn" role="tab" id="tab-CN" aria-controls="panel-CN" aria-selected="true" onclick="showTab('CN')">Ciências da Natureza</button>
+<button class="tab-btn" role="tab" id="tab-CH" aria-controls="panel-CH" aria-selected="false" onclick="showTab('CH')">Ciências Humanas</button>
+<button class="tab-btn" role="tab" id="tab-LC" aria-controls="panel-LC" aria-selected="false" onclick="showTab('LC')">Linguagens e Códigos</button>
+<button class="tab-btn" role="tab" id="tab-MT" aria-controls="panel-MT" aria-selected="false" onclick="showTab('MT')">Matemática</button>
+</div>
+<script>
+function showTab(area){
+  const panels = document.querySelectorAll('.tab-panel');
+  const btns = document.querySelectorAll('.tab-btn');
+  panels.forEach(p => p.classList.remove('active'));
+  btns.forEach(b => b.setAttribute('aria-selected','false'));
+  const panel = document.getElementById('panel-' + area);
+  const btn = document.getElementById('tab-' + area);
+  if(panel) panel.classList.add('active');
+  if(btn) btn.setAttribute('aria-selected','true');
+  try{ history.replaceState(null,'','#' + area); }catch(e){}
+}
+window.addEventListener('DOMContentLoaded', () => {
+  const h = (location.hash || '').replace('#','');
+  const area = h && ['CN','CH','LC','MT'].includes(h) ? h : 'CN';
+  showTab(area);
+});
+</script>
+<div class="tab-panel" id="panel-CN" role="tabpanel" aria-labelledby="tab-CN">
+<div class="summary">
+<h3>Resumo completo (UF=PA)</h3>
+<p class="muted">Indicadores calculados em todos os itens respondidos desta área, usando apenas itens estáveis (a&gt;0 e |b|&lt;=4). Itens com parâmetros instáveis aparecem como ponto de atenção no relatório do professor.</p>
+<table>
+<thead><tr><th>Medida</th><th>Valor</th></tr></thead>
+<tbody>
+<tr><td>Habilidade</td><td>560.74 (theta=-0.3926)</td></tr>
+<tr><td>Acertos improváveis (Xi)</td><td>4 | perfil: <span class="pill">Moderada</span></td></tr>
+<tr><td>Erros improváveis (Yi)</td><td>0 | perfil: <span class="pill">Sem ocorrências</span></td></tr>
+<tr><td>Itens estáveis respondidos</td><td>36</td></tr>
+<tr><td>Itens instáveis respondidos (excluídos)</td><td>5</td></tr>
+</tbody></table>
+<p class="muted">O que significa: <b>acerto improvável</b> = você acertou um item que o modelo esperava baixa chance; <b>erro improvável</b> = você errou um item que o modelo esperava alta chance. Use esses alertas para decidir onde revisar com mais atenção.</p>
+</div>
+<details>
+<summary>PA - Estudante A008 | PA | Ciências da Natureza | Questão 22</summary>
+<div class="detail-body">
+<p><a href="../../artefatos/report_A008_PA_CN_22.html" target="_blank">Abrir em nova aba</a></p>
+<iframe loading="lazy" src="../../artefatos/report_A008_PA_CN_22.html"></iframe>
+</div>
+</details>
+<details>
+<summary>PA - Estudante A008 | PA | Ciências da Natureza | Questão 23</summary>
+<div class="detail-body">
+<p><a href="../../artefatos/report_A008_PA_CN_23.html" target="_blank">Abrir em nova aba</a></p>
+<iframe loading="lazy" src="../../artefatos/report_A008_PA_CN_23.html"></iframe>
+</div>
+</details>
+<details>
+<summary>PA - Estudante A008 | PA | Ciências da Natureza | Questão 6</summary>
+<div class="detail-body">
+<p><a href="../../artefatos/report_A008_PA_CN_6.html" target="_blank">Abrir em nova aba</a></p>
+<iframe loading="lazy" src="../../artefatos/report_A008_PA_CN_6.html"></iframe>
+</div>
+</details>
+</div>
+<div class="tab-panel" id="panel-CH" role="tabpanel" aria-labelledby="tab-CH">
+<div class="summary">
+<h3>Resumo completo (UF=PA)</h3>
+<p class="muted">Indicadores calculados em todos os itens respondidos desta área, usando apenas itens estáveis (a&gt;0 e |b|&lt;=4). Itens com parâmetros instáveis aparecem como ponto de atenção no relatório do professor.</p>
+<table>
+<thead><tr><th>Medida</th><th>Valor</th></tr></thead>
+<tbody>
+<tr><td>Habilidade</td><td>596.40 (theta=-0.0360)</td></tr>
+<tr><td>Acertos improváveis (Xi)</td><td>1 | perfil: <span class="pill">Baixa</span></td></tr>
+<tr><td>Erros improváveis (Yi)</td><td>0 | perfil: <span class="pill">Sem ocorrências</span></td></tr>
+<tr><td>Itens estáveis respondidos</td><td>42</td></tr>
+<tr><td>Itens instáveis respondidos (excluídos)</td><td>2</td></tr>
+</tbody></table>
+<p class="muted">O que significa: <b>acerto improvável</b> = você acertou um item que o modelo esperava baixa chance; <b>erro improvável</b> = você errou um item que o modelo esperava alta chance. Use esses alertas para decidir onde revisar com mais atenção.</p>
+</div>
+<details>
+<summary>PA - Estudante A008 | PA | Ciências Humanas | Questão 12</summary>
+<div class="detail-body">
+<p><a href="../../artefatos/report_A008_PA_CH_12.html" target="_blank">Abrir em nova aba</a></p>
+<iframe loading="lazy" src="../../artefatos/report_A008_PA_CH_12.html"></iframe>
+</div>
+</details>
+<details>
+<summary>PA - Estudante A008 | PA | Ciências Humanas | Questão 39</summary>
+<div class="detail-body">
+<p><a href="../../artefatos/report_A008_PA_CH_39.html" target="_blank">Abrir em nova aba</a></p>
+<iframe loading="lazy" src="../../artefatos/report_A008_PA_CH_39.html"></iframe>
+</div>
+</details>
+<details>
+<summary>PA - Estudante A008 | PA | Ciências Humanas | Questão 5</summary>
+<div class="detail-body">
+<p><a href="../../artefatos/report_A008_PA_CH_5.html" target="_blank">Abrir em nova aba</a></p>
+<iframe loading="lazy" src="../../artefatos/report_A008_PA_CH_5.html"></iframe>
+</div>
+</details>
+</div>
+<div class="tab-panel" id="panel-LC" role="tabpanel" aria-labelledby="tab-LC">
+<div class="summary">
+<h3>Resumo completo (UF=PA)</h3>
+<p class="muted">Indicadores calculados em todos os itens respondidos desta área, usando apenas itens estáveis (a&gt;0 e |b|&lt;=4). Itens com parâmetros instáveis aparecem como ponto de atenção no relatório do professor.</p>
+<table>
+<thead><tr><th>Medida</th><th>Valor</th></tr></thead>
+<tbody>
+<tr><td>Habilidade</td><td>599.36 (theta=-0.0064)</td></tr>
+<tr><td>Acertos improváveis (Xi)</td><td>0 | perfil: <span class="pill">Sem ocorrências</span></td></tr>
+<tr><td>Erros improváveis (Yi)</td><td>0 | perfil: <span class="pill">Sem ocorrências</span></td></tr>
+<tr><td>Itens estáveis respondidos</td><td>43</td></tr>
+<tr><td>Itens instáveis respondidos (excluídos)</td><td>2</td></tr>
+</tbody></table>
+<p class="muted">O que significa: <b>acerto improvável</b> = você acertou um item que o modelo esperava baixa chance; <b>erro improvável</b> = você errou um item que o modelo esperava alta chance. Use esses alertas para decidir onde revisar com mais atenção.</p>
+</div>
+<details>
+<summary>PA - Estudante A008 | PA | Linguagens e Códigos | Questão 10</summary>
+<div class="detail-body">
+<p><a href="../../artefatos/report_A008_PA_LC_10.html" target="_blank">Abrir em nova aba</a></p>
+<iframe loading="lazy" src="../../artefatos/report_A008_PA_LC_10.html"></iframe>
+</div>
+</details>
+<details>
+<summary>PA - Estudante A008 | PA | Linguagens e Códigos | Questão 2</summary>
+<div class="detail-body">
+<p><a href="../../artefatos/report_A008_PA_LC_2.html" target="_blank">Abrir em nova aba</a></p>
+<iframe loading="lazy" src="../../artefatos/report_A008_PA_LC_2.html"></iframe>
+</div>
+</details>
+<details>
+<summary>PA - Estudante A008 | PA | Linguagens e Códigos | Questão 20</summary>
+<div class="detail-body">
+<p><a href="../../artefatos/report_A008_PA_LC_20.html" target="_blank">Abrir em nova aba</a></p>
+<iframe loading="lazy" src="../../artefatos/report_A008_PA_LC_20.html"></iframe>
+</div>
+</details>
+</div>
+<div class="tab-panel" id="panel-MT" role="tabpanel" aria-labelledby="tab-MT">
+<div class="summary">
+<h3>Resumo completo (UF=PA)</h3>
+<p class="muted">Indicadores calculados em todos os itens respondidos desta área, usando apenas itens estáveis (a&gt;0 e |b|&lt;=4). Itens com parâmetros instáveis aparecem como ponto de atenção no relatório do professor.</p>
+<table>
+<thead><tr><th>Medida</th><th>Valor</th></tr></thead>
+<tbody>
+<tr><td>Habilidade</td><td>535.64 (theta=-0.6436)</td></tr>
+<tr><td>Acertos improváveis (Xi)</td><td>2 | perfil: <span class="pill">Baixa</span></td></tr>
+<tr><td>Erros improváveis (Yi)</td><td>0 | perfil: <span class="pill">Sem ocorrências</span></td></tr>
+<tr><td>Itens estáveis respondidos</td><td>36</td></tr>
+<tr><td>Itens instáveis respondidos (excluídos)</td><td>7</td></tr>
+</tbody></table>
+<p class="muted">O que significa: <b>acerto improvável</b> = você acertou um item que o modelo esperava baixa chance; <b>erro improvável</b> = você errou um item que o modelo esperava alta chance. Use esses alertas para decidir onde revisar com mais atenção.</p>
+</div>
+<details>
+<summary>PA - Estudante A008 | PA | Matemática | Questão 13</summary>
+<div class="detail-body">
+<p><a href="../../artefatos/report_A008_PA_MT_13.html" target="_blank">Abrir em nova aba</a></p>
+<iframe loading="lazy" src="../../artefatos/report_A008_PA_MT_13.html"></iframe>
+</div>
+</details>
+<details>
+<summary>PA - Estudante A008 | PA | Matemática | Questão 29</summary>
+<div class="detail-body">
+<p><a href="../../artefatos/report_A008_PA_MT_29.html" target="_blank">Abrir em nova aba</a></p>
+<iframe loading="lazy" src="../../artefatos/report_A008_PA_MT_29.html"></iframe>
+</div>
+</details>
+<details>
+<summary>PA - Estudante A008 | PA | Matemática | Questão 31</summary>
+<div class="detail-body">
+<p><a href="../../artefatos/report_A008_PA_MT_31.html" target="_blank">Abrir em nova aba</a></p>
+<iframe loading="lazy" src="../../artefatos/report_A008_PA_MT_31.html"></iframe>
+</div>
+</details>
+</div>
+</body></html>
